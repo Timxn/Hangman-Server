@@ -6,17 +6,23 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
+import java.util.logging.*;
+
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println("Gameservice Server WarmUp has begun...");
+        Logger log = Logger.getLogger(String.valueOf(Main.class));
+        log.info("Gameservice Server WarmUp has begun...");
+
+        Handler filehandler = new FileHandler("src/main/resources/myapp.log");
+        log.addHandler(filehandler);
 
         // load a config file for server configurations
         Properties configuration = new Properties();
         configuration.load(new FileInputStream(new File("src/main/resources/conf.properties")));
-        System.out.println(configuration.get("key"));
+        log.info("Config loaded...");
 
-        int port = Integer.parseInt("8001");
+        int port = Integer.parseInt((String) configuration.get("port"));
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
