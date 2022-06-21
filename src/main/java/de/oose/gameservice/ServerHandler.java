@@ -7,6 +7,8 @@ import de.oose.gameservice.gamelogic.Message;
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ServerHandler implements Runnable {
@@ -40,35 +42,24 @@ public class ServerHandler implements Runnable {
 
             String text;
 
-            label:
             while (true) {
                 text = reader.readLine();
-                Message tmp = new Message("test", "test2 oder so");
-                Gson gson = new Gson();
-                String tmp2 = gson.toJson(tmp);
-                Message tmp3 = gson.fromJson(tmp2, Message.class);
-                Message message = gson.fromJson(text, Message.class);
-                switch (message.getKey()) {
-                    case "##guess":
-                        log.info("i tried to guess i guess");
-                        break;
-                    case "##createRoom": {
-                        instance = new GameController("");
-                        int id = Main.addGameInstance(instance);
-                        log.info("Created Room with ID: " + id);
-                        writer.println(id);
-                        break;
-                    }
-                    case "##joinRoom": {
-                        int id = Integer.parseInt(message.getValue());
-                        instance = Main.getGameInstance(id);
-                        log.info("Joined Room " + id);
-                        writer.println("joined");
-                        break;
-                    }
-                    case "##leave":
-                        socket.close();
-                        break label;
+                if (text.contains("##createRoom")) {
+                    int id = Main.addGameInstance(instance);
+                    log.info("Created Room with ID: " + id);
+                    writer.println(id);
+                } else if (text.contains("##joinRoom")) {
+                    Pattern p = Pattern.compile("(\\D*)(\\d+)(\\D*)");
+                    Matcher m = p.matcher(text);
+                    int id = Integer.parseInt(m.group(1));
+                    instance = Main.getGameInstance(id);
+                    log.info("Joined Room " + id);
+                    writer.println("joined");
+                } else if (text.contains("##guess")) {
+                    log.info("I FUCKING GUESSED IT");
+                } else if (text.contains("##close")) {
+                    socket.close();
+                    break;
                 }
             }
         } catch (IOException ex) {
