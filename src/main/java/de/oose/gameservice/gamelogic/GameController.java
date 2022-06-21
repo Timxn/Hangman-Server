@@ -25,7 +25,7 @@ public class GameController {
                 }
             }
         }
-        triesLeft++;
+        triesLeft--;
         return triesLeft;
     }
 
