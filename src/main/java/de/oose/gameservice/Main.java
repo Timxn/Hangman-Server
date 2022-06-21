@@ -1,15 +1,19 @@
 package de.oose.gameservice;
 
+import de.oose.gameservice.gamelogic.GameController;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.*;
 
 
 public class Main {
+    private static HashMap<Integer, GameController> allGameInstances = new HashMap<>();
     public static void main(String[] args) throws IOException {
         Logger log = Logger.getLogger(String.valueOf(Main.class));
         log.info("Gameservice Server WarmUp has begun...");
@@ -23,6 +27,7 @@ public class Main {
         log.info("Config loaded...");
 
         int port = Integer.parseInt((String) configuration.get("port"));
+        log.info("Socket started with port " + port);
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
@@ -36,9 +41,18 @@ public class Main {
             }
 
         } catch (IOException ex) {
-            System.out.println("Server exception: " + ex.getMessage());
+            log.severe("Server exception: " + ex.getMessage());
             ex.printStackTrace();
         }
-        System.out.println("LOL");
+    }
+
+    public static GameController getGameInstance(int id) {
+        return allGameInstances.get(id);
+    }
+    public static int addGameInstance(GameController gameInstance) {
+        int id = (int)(Math.random()*9999);
+        while (allGameInstances.containsKey(id)) id = (int)(Math.random()*9999);
+        allGameInstances.put(id, gameInstance);
+        return id;
     }
 }

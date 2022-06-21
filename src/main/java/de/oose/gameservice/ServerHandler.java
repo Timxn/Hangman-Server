@@ -1,19 +1,19 @@
 package de.oose.gameservice;
 
+import com.google.gson.Gson;
+import de.oose.gameservice.gamelogic.GameController;
+import de.oose.gameservice.gamelogic.Message;
+
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.logging.Logger;
+
 
 public class ServerHandler implements Runnable {
+    private GameController instance = null;
+    Logger log = Logger.getLogger(String.valueOf(ServerHandler.class));
+
     private Socket socket;
-    private UUID sessionID;
-
-    public UUID getSessionID() {
-        return sessionID;
-    }
-
     public ServerHandler(Socket socket) {
         this.socket = socket;
     }
@@ -40,14 +40,37 @@ public class ServerHandler implements Runnable {
 
             String text;
 
-            do {
+            label:
+            while (true) {
                 text = reader.readLine();
-                String reverseText = new StringBuilder(text).reverse().toString();
-                writer.println("Server: " + reverseText + " du Lappen");
-
-            } while (!text.equals("bye"));
-
-            socket.close();
+                Message tmp = new Message("test", "test2 oder so");
+                Gson gson = new Gson();
+                String tmp2 = gson.toJson(tmp);
+                Message tmp3 = gson.fromJson(tmp2, Message.class);
+                Message message = gson.fromJson(text, Message.class);
+                switch (message.getKey()) {
+                    case "##guess":
+                        log.info("i tried to guess i guess");
+                        break;
+                    case "##createRoom": {
+                        instance = new GameController("");
+                        int id = Main.addGameInstance(instance);
+                        log.info("Created Room with ID: " + id);
+                        writer.println(id);
+                        break;
+                    }
+                    case "##joinRoom": {
+                        int id = Integer.parseInt(message.getValue());
+                        instance = Main.getGameInstance(id);
+                        log.info("Joined Room " + id);
+                        writer.println("joined");
+                        break;
+                    }
+                    case "##leave":
+                        socket.close();
+                        break label;
+                }
+            }
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
