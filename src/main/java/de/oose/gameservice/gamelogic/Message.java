@@ -1,36 +1,38 @@
 package de.oose.gameservice.gamelogic;
 
-public class Message {
-    public String key;
-    public String value;
+import java.io.Serializable;
+
+public class Message implements Serializable {
+    private String command;
+    private String payload;
 
     @Override
     public String toString() {
         return "Message{" +
-                "key='" + key + '\'' +
-                ", value='" + value + '\'' +
+                "key='" + command + '\'' +
+                ", value='" + payload + '\'' +
                 '}';
     }
 
-    public String getKey() {
-        return key;
+    public String getCommand() {
+        return command;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
-    public String getValue() {
-        return value;
+    public String getPayload() {
+        return payload;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 
     public Message(String key, String value) {
-        this.key = key;
-        this.value = value;
+        this.command = key;
+        this.payload = value;
     }
 }
 
