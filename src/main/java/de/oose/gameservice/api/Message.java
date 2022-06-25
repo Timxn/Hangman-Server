@@ -1,4 +1,4 @@
-package de.oose.gameservice.gamelogic;
+package de.oose.gameservice.api;
 
 import java.io.Serializable;
 
