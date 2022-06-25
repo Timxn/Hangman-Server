@@ -1,6 +1,6 @@
 package de.oose.gameservice;
 
-import de.oose.gameservice.gamelogic.GameController;
+import de.oose.gameservice.gamelogic.GameControllerImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +13,7 @@ import java.util.logging.*;
 
 
 public class Main {
-    private static HashMap<Integer, GameController> allGameInstances = new HashMap<>();
+    private static HashMap<Integer, GameControllerImpl> allGameInstances = new HashMap<>();
     public static void main(String[] args) throws IOException {
         Logger log = Logger.getLogger(String.valueOf(Main.class));
         log.info("Gameservice Server WarmUp has begun...");
@@ -36,8 +36,6 @@ public class Main {
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected: " + socket.toString());
-
-                new Thread(new ServerHandler(socket)).start();
             }
 
         } catch (IOException ex) {
@@ -46,10 +44,10 @@ public class Main {
         }
     }
 
-    public static GameController getGameInstance(int id) {
+    public static GameControllerImpl getGameInstance(int id) {
         return allGameInstances.get(id);
     }
-    public static int addGameInstance(GameController gameInstance) {
+    public static int addGameInstance(GameControllerImpl gameInstance) {
         int id = (int)(Math.random()*9999);
         while (allGameInstances.containsKey(id)) id = (int)(Math.random()*9999);
         allGameInstances.put(id, gameInstance);
