@@ -1,14 +1,15 @@
 package de.oose.gameservice.gamelogic;
 
-import de.oose.gameservice.api.Message;
+import de.oose.gameservice.gamelogic.interfaces.HouseKeepingMessage;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
-public class HouseKeeping implements Runnable{
-    GameControllerImpl game;
-
-    public HouseKeeping(GameControllerImpl game) {
+public class HouseKeeper implements Runnable{
+    private GameControllerImpl game;
+    private ArrayList<ObjectOutputStream> objectOutputStreams = new ArrayList<>();
+    public HouseKeeper(GameControllerImpl game) {
         this.game = game;
     }
 
@@ -28,21 +29,17 @@ public class HouseKeeping implements Runnable{
         while (true) {
             try {
                 wait(6000);
-                sendMessageToAllUsers(game.getClientInformations());
+
             } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
     }
 
-    private void sendMessageToAllUsers(Message message) {
-        for (ObjectOutputStream stream: game.getAllOutPutStreams()) {
-            try {
-                stream.writeObject(message);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public void addObjectOutputStreams(ObjectOutputStream objectOutputStream) {
+        objectOutputStreams.add(objectOutputStream);
     }
 }

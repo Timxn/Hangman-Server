@@ -1,83 +1,58 @@
 package de.oose.gameservice.gamelogic;
 
-import java.io.ObjectOutputStream;
+import de.oose.gameservice.gamelogic.interfaces.GameController;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class GameControllerImpl {
-    private Leaderboard leaderboard;    // make static (golbal)
-    private ArrayList<String> users = new ArrayList<>();
-    private ArrayList<ObjectOutputStream> allUserOutPutStreams = new ArrayList<>();
-    private String wordGiver;
-    private ArrayList<String> unknownWord;
-    private ArrayList<String> knownWord;
-    private ArrayList<String> tried;
-    private final int MAX_TRIES = 9;
-    private int triesLeft = MAX_TRIES;
-    private boolean active = false;
-    public GameControllerImpl() {
-        this.leaderboard = new Leaderboard();
-    }
-    public void makeGuess(String guess) {
-        guess.toLowerCase();
-        guess.substring(0,1);
-        testCharacterThenSetIt(guess);
-        whoWon();
+public class GameControllerImpl implements GameController {
+    /**
+     * Get the global scoreboard, provided with the integer mapped to the Username in a Hashmap
+     *
+     * @return Hashmap<Username, Points>
+     */
+    @Override
+    public HashMap<String, Integer> getScoreboard() {
+        return null;
     }
 
-    public ArrayList<String> getUnknownWord() {
-        return unknownWord;
-    }
-    public void setWord(String word, String username) {
-        word.toLowerCase();
-        this.unknownWord = new ArrayList<>();
-        for (Character character:word.toCharArray()) {
-            this.unknownWord.add(String.valueOf(character));
-        }
-
-        this.knownWord = new ArrayList<>(this.unknownWord.size());
-        for (int i = 0; i < knownWord.size(); i++) {
-            knownWord.add(null);
-        }
-
-        this.wordGiver = username;
-        this.active = true;
-
-        tried.clear();
-        triesLeft = MAX_TRIES;
+    /**
+     * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the informations
+     *
+     * @return String (the word ex.: W NULL R D) (WORD)
+     */
+    @Override
+    public String getWordWithUnknownCharactersBeingNULL() {
+        return null;
     }
 
-    public void addUser(String newUsername, ObjectOutputStream objectOutputStream) {
-        this.users.add(newUsername);
-        this.allUserOutPutStreams.add(objectOutputStream);
+    /**
+     * Get all characters that have been tried in an ArrayList<Character>
+     *
+     * @return ArrayList<Character>
+     */
+    @Override
+    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried() {
+        return null;
     }
 
-    private void testCharacterThenSetIt(String character) {
-        character.toLowerCase();
-        character = character.substring(0,1);
-        if (tried.contains(character)) return;
-        else if (unknownWord.contains(character)) {
-            knownWord.add(unknownWord.indexOf(character),character);
-            unknownWord.add(unknownWord.indexOf(character),null);
-            tried.add(character);
-            return;
-        }
-        triesLeft--;
-        return;
+    /**
+     * How many tries have the Guesser left
+     *
+     * @return int
+     */
+    @Override
+    public int howManyTriesAreLeft() {
+        return 0;
     }
 
-    public ArrayList<ObjectOutputStream> getAllOutPutStreams() {
-        return allUserOutPutStreams;
-    }
-
-    private void whoWon() {
-        if (triesLeft == 0) {
-            leaderboard.addPoints(wordGiver);
-            this.active = false;
-        } else if (triesLeft > 0 && !(knownWord.contains(null))) {
-            for (String user:users) {
-                if (!(user.equals(wordGiver))) leaderboard.addPoints(user);
-            }
-            this.active = false;
-        }
+    /**
+     * Return the Username of the User whos turn it is to guess a character
+     *
+     * @return String (Username ex.: Test)
+     */
+    @Override
+    public String whoseTurnIsIt() {
+        return null;
     }
 }
