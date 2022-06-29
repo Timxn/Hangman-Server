@@ -50,7 +50,13 @@ public interface GameController {
     public HashMap<String, Integer> getScoreboard();
 
     /**
-     * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the informations
+     * Get the players of the game in which the player is
+     * @return ArrayList<Username>
+     */
+    public ArrayList<String> getPlayers();
+
+    /**
+     * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the information
      * @return String (the word ex.: W NULL R D) (WORD) or null if no word exists yet (god has not yet set one)
      */
     public ArrayList<Character> getWord();
@@ -74,7 +80,7 @@ public interface GameController {
     public boolean getWordGuessed();
 
     /**
-     * Return the Username of the User whos turn it is to guess a character
+     * Return the Username of the User whose turn it is to guess a character
      * @return String (Username ex.: Test)
      */
     public String whoseTurnIsIt();
