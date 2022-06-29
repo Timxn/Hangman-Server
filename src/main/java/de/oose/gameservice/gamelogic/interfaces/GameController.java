@@ -9,14 +9,14 @@ public interface GameController {
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void joinGame(String username, int gameIdentifier);
+    public void joinGame(String gameIdentifier, String username);
 
     /**
      * removes a user from an existing game.
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void leaveGame(String username, int gameIdentifier);
+    public void leaveGame(String gameIdentifier, String username);
 
     /**
      * creates a new game.
@@ -29,19 +29,19 @@ public interface GameController {
      * starts a new game.
      * @return 0 = normal Player, 1 = god
      */
-    public int startGame();
+    public int startGame(String gameIdentifier);
 
     /**
      * gives god the ability to set the word for the next round.
      * @param word the new word
      */
-    public void setWord(String word);
+    public void setWord(String gameIdentifier, String word);
 
     /**
      * make a guess
      * @param letter
      */
-    public void guessLetter(char letter);
+    public void guessLetter(String gameIdentifier, char letter);
 
     /**
      * Get the global scoreboard, provided with the integer mapped to the Username in a Hashmap
@@ -53,31 +53,38 @@ public interface GameController {
      * Get the players of the game in which the player is
      * @return ArrayList<Username>
      */
-    public ArrayList<String> getPlayers();
+    public ArrayList<String> getPlayers(String gameIdentifier);
 
     /**
      * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the information
      * @return String (the word ex.: W NULL R D) (WORD) or null if no word exists yet (god has not yet set one)
      */
-    public ArrayList<Character> getWord();
+    public ArrayList<Character> getWord(String gameIdentifier);
 
     /**
      * Get all characters that have been tried in an ArrayList<Character>
      * @return ArrayList<Character>
      */
-    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried();
+    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier);
 
     /**
      * How many tries have the Guesser left
      * @return int
      */
-    public int howManyTriesAreLeft();
+    public int howManyTriesAreLeft(String gameIdentifier);
 
     /**
      * gets if the word has been guessed.
      * @return
      */
-    public boolean getWordGuessed();
+    public boolean getWordGuessed(String gameIdentifier);
+
+    /**
+     * get if game is started
+     * @param gameIdentifier
+     * @return
+     */
+    public boolean getStarted(String gameIdentifier);
 
     /**
      * Return the Username of the User whose turn it is to guess a character
