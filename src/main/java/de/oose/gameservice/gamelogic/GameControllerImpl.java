@@ -36,7 +36,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public String createGame(String username) {
-        return null;
+        return "null";
     }
 
     /**
@@ -79,7 +79,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public HashMap<String, Integer> getScoreboard() {
-        return null;
+        return new HashMap<>();
     }
 
     /**
@@ -90,7 +90,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public ArrayList<String> getPlayers(String gameIdentifier) {
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -101,7 +101,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public ArrayList<Character> getWord(String gameIdentifier) {
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -112,7 +112,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) {
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -155,6 +155,6 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public String whoseTurnIsIt() {
-        return null;
+        return "null";
     }
 }
