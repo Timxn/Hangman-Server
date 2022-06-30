@@ -28,7 +28,7 @@ public class ServerThread implements Runnable {
     @Override
     public void run() {
         Logger log = Logger.getLogger(String.valueOf(Main.class));
-        log.info("Gameservice Server WarmUp has begun...");
+        log.info("Gameservice Server WarmUp has begun... prepare order 66");
 
         Handler filehandler = null;
 
@@ -49,7 +49,7 @@ public class ServerThread implements Runnable {
             log.severe(e.getMessage());
         }
 
-        log.info("Config loaded...");
+        log.info("Config loaded... while(!true.equals(false)) has been replaced");
         int port = Integer.parseInt((String) configuration.get("port"));
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
