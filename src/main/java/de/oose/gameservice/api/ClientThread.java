@@ -74,10 +74,15 @@ public class ClientThread implements Runnable {
                         break;
                     }
                     // waiting page
-                    case "startGame":
+                    case "startGame": {
                         Main.gameController.startGame(gameIdentifier);
                         log.info("I FUCKING STARTED IT");
+                        JSONObject response = new JSONObject()
+                                .put("command", "response")
+                                .put("status", "successful");
+                        objectOutputStream.writeUTF(response.toString());
                         break;
+                    }
                     case "updateWaiting": {
                         JSONObject response = new JSONObject();
                         response.put("gameID", gameIdentifier)
