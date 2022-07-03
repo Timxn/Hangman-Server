@@ -92,6 +92,22 @@ public class ClientThread implements Runnable {
                         break;
                     }
                     // game page
+                    case "isGod": {
+                        JSONObject response = new JSONObject();
+                        response.put("command", "response")
+                                .put("isGod", Main.gameController.isGod(gameIdentifier, username));
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
+
+                    case "isStarted": {
+                        JSONObject response = new JSONObject();
+                        response.put("command", "response")
+                                .put("isStarted", Main.gameController.getStarted(gameIdentifier));
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
+
                     case "guess":
                         Main.gameController.guessLetter(gameIdentifier, message.getString("character").charAt(0));
                         objectOutputStream.writeUTF(new JSONObject("status", "successful").toString());
