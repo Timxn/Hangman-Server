@@ -32,6 +32,14 @@ public interface GameController {
     public int startGame(String gameIdentifier);
 
     /**
+     * returns if a player is god
+     * @param gameIdentifier
+     * @param username
+     * @return true if god...
+     */
+    public boolean isGod(String gameIdentifier, String username);
+
+    /**
      * gives god the ability to set the word for the next round.
      * @param word the new word
      */
