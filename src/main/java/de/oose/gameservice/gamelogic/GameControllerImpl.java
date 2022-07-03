@@ -51,6 +51,14 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
+     * returns if a player is god
+     * @param gameIdentifier
+     * @param username
+     * @return true if god...
+     */
+    public boolean isGod(String gameIdentifier, String username) {return true;}
+
+    /**
      * gives god the ability to set the word for the next round.
      *
      * @param gameIdentifier
