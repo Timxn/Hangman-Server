@@ -2,19 +2,22 @@ package de.oose.gameservice.api;
 
 import de.oose.gameservice.Main;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
+
+import de.oose.gameservice.gamelogic.GameControllerImpl;
+import org.json.*;
 
 
 public class ClientThread implements Runnable {
     private String username;
     private String gameIdentifier;
     Logger log = Logger.getLogger(String.valueOf(ClientThread.class));
-    ObjectInputStream objectInputStream;
-    ObjectOutputStream objectOutputStream;
+    DataInputStream objectInputStream;
+    DataOutputStream objectOutputStream;
 
     private final Socket socket;
     public ClientThread(Socket socket) {
@@ -35,57 +38,81 @@ public class ClientThread implements Runnable {
     @Override
     public void run() {
         try {
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream = new DataInputStream(socket.getInputStream());
+            objectOutputStream = new DataOutputStream(socket.getOutputStream());
 
             label:
             while (true) {
-                de.oose.gameservice.api.Message message = (de.oose.gameservice.api.Message) objectInputStream.readObject();
+                JSONObject message = new JSONObject(objectInputStream.readUTF());
                 log.info("DEBUG");
-                log.info("Message received with command " + message.getCommand() + " and Payload " + message.getPayload());
-                switch (message.getCommand()) {
-
+//                log.info("Message received with command " + message.get("command") + " and Payload " + message.get("payload"));
+                switch (message.getString("command")) {
                     // login page
                     case "createRoom":  // payload is "username"
-                        this.gameIdentifier = Main.gameController.createGame(message.getPayload());
-                        this.username = message.getPayload();
+                    {
+                        this.username = message.getString("username");
+                        this.gameIdentifier = Main.gameController.createGame(username);
                         log.info("Created Room with ID: " + gameIdentifier);
-                        objectOutputStream.writeObject(new de.oose.gameservice.api.Message("response", "successful;" + gameIdentifier));
+                        JSONObject response = new JSONObject();
+                        response.put("command", "response")
+                                .put("status", "successful")
+                                .put("gameID", gameIdentifier);
+                        objectOutputStream.writeUTF(response.toString());
                         break;
+                    }
                     case "joinRoom":    // payload is "gameID;username"
-                        this.gameIdentifier = message.getPayload().split(";")[0];
-                        this.username = message.getPayload().split(";")[1];
-                        Main.gameController.joinGame(this.gameIdentifier, this.username);
-                        log.info("Joined Room " + this.gameIdentifier);
-                        objectOutputStream.writeObject(new de.oose.gameservice.api.Message("response", "successful;" + gameIdentifier));
+                    {
+                        this.gameIdentifier = message.getString("gameID");
+                        this.username = message.getString("username");
+                        Main.gameController.joinGame(gameIdentifier, username);
+                        log.info("Joined Room " + gameIdentifier);
+                        JSONObject response = new JSONObject()
+                                .put("command", "response")
+                                .put("status", "successful")
+                                .put("gameID", gameIdentifier);
+                        objectOutputStream.writeUTF(response.toString());
                         break;
-
+                    }
                     // waiting page
                     case "startGame":
-                        Main.gameController.startGame(this.gameIdentifier);
+                        Main.gameController.startGame(gameIdentifier);
                         log.info("I FUCKING STARTED IT");
                         break;
-                    case "updateWaiting":
-                        objectOutputStream.writeObject(new de.oose.gameservice.api.Message("response", this.gameIdentifier +"; " + Main.gameController.getPlayers(this.gameIdentifier).toString() + "; " + Main.gameController.getStarted(this.gameIdentifier)));
+                    case "updateWaiting": {
+                        JSONObject response = new JSONObject();
+                        response.put("gameID", gameIdentifier)
+                                .put("isStarted", Main.gameController.getStarted(gameIdentifier))
+                                .put("userList", Main.gameController.getPlayers(gameIdentifier));
+                        objectOutputStream.writeUTF(response.toString());
                         break;
-
+                    }
                     // game page
                     case "guess":
-                        Main.gameController.guessLetter(this.gameIdentifier, message.getPayload().charAt(0));
-                        objectOutputStream.writeObject(new de.oose.gameservice.api.Message("response", "successful;" + gameIdentifier));
+                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").charAt(0));
+                        objectOutputStream.writeUTF(new JSONObject("status", "successful").toString());
                         break;
-                    case "updateGame":
-                        objectOutputStream.writeObject(new de.oose.gameservice.api.Message("response", Main.gameController.whoseTurnIsIt() + "; " + Main.gameController.howManyTriesAreLeft(this.gameIdentifier) + "; " + Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier) + "; " + Main.gameController.getWord(this.gameIdentifier)));
+                    case "updateGame": {
+                        JSONObject response = new JSONObject();
+                        response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt())
+                                .put("triesLeft", Main.gameController.howManyTriesAreLeft(gameIdentifier))
+                                .put("characterList", Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier))
+                                .put("word", Main.gameController.getWord(this.gameIdentifier));
+                        objectOutputStream.writeUTF(response.toString());
                         break;
-
+                    }
                     // win page
-                    case "quitGame":
+                    case "quitGame": {
                         Main.gameController.leaveGame(this.gameIdentifier, this.username);
-                        objectOutputStream.writeObject(new de.oose.gameservice.api.Message("response", "successful;" + gameIdentifier));
+                        JSONObject response = new JSONObject();
+                        response.put("status", "successful");
+                        objectOutputStream.writeUTF(response.toString());
                         break;
+                    }
                     case "restartGame":
                         Main.gameController.startGame(this.gameIdentifier);
-                        objectOutputStream.writeObject(new de.oose.gameservice.api.Message("response", "successful;" + gameIdentifier));
+                        JSONObject response = new JSONObject();
+                        response.put("status", "successful");
+                        objectOutputStream.writeUTF(response.toString());
                         break;
 
                     case "close":
@@ -99,9 +126,6 @@ public class ClientThread implements Runnable {
         } catch (IOException ex) {
             log.severe("Server exception: " + ex.getMessage() + ", probably unsafe closure of a connection");
             ex.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            log.severe("Serialization exception from Message prob: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
