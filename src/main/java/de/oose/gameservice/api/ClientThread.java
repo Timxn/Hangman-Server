@@ -155,6 +155,8 @@ public class ClientThread implements Runnable {
         } catch (IOException ex) {
             log.severe("Server exception: " + ex.getMessage() + ", probably unsafe closure of a connection");
             ex.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
