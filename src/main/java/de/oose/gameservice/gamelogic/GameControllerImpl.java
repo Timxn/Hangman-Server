@@ -124,13 +124,13 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
-     * How many tries have the Guesser left
+     * How many mistakes the guessers made
      *
      * @param gameIdentifier
-     * @return int
+     * @return int 0-9
      */
     @Override
-    public int howManyTriesAreLeft(String gameIdentifier) {
+    public int getMistakesMade(String gameIdentifier) {
         return 0;
     }
 
