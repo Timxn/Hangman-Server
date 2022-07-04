@@ -44,8 +44,7 @@ public class ClientThread implements Runnable {
             label:
             while (true) {
                 JSONObject message = new JSONObject(objectInputStream.readUTF());
-                log.info("DEBUG");
-//                log.info("Message received with command " + message.get("command") + " and Payload " + message.get("payload"));
+//                log.info("DEBUG");
                 switch (message.getString("command")) {
                     // login page
                     case "createRoom":  // payload is "username"
@@ -92,6 +91,31 @@ public class ClientThread implements Runnable {
                         break;
                     }
                     // game page
+                    case "isGod": {
+                        JSONObject response = new JSONObject();
+                        response.put("command", "response")
+                                .put("isGod", Main.gameController.isGod(gameIdentifier, username));
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
+
+                    case "setWord": {
+                        Main.gameController.setWord(gameIdentifier, message.getString("word"));
+                        JSONObject response = new JSONObject();
+                        response.put("command", "response")
+                                .put("status", "successful");
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
+
+                    case "isStarted": {
+                        JSONObject response = new JSONObject();
+                        response.put("command", "response")
+                                .put("isStarted", Main.gameController.getStarted(gameIdentifier));
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
+
                     case "guess":
                         Main.gameController.guessLetter(gameIdentifier, message.getString("character").charAt(0));
                         objectOutputStream.writeUTF(new JSONObject("status", "successful").toString());
@@ -99,7 +123,7 @@ public class ClientThread implements Runnable {
                     case "updateGame": {
                         JSONObject response = new JSONObject();
                         response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt())
-                                .put("triesLeft", Main.gameController.howManyTriesAreLeft(gameIdentifier))
+                                .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
                                 .put("characterList", Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier))
                                 .put("word", Main.gameController.getWord(this.gameIdentifier));
                         objectOutputStream.writeUTF(response.toString());
