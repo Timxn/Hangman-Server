@@ -75,11 +75,14 @@ public interface GameController {
      */
     public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier);
 
+
     /**
-     * How many tries have the Guesser left
-     * @return int
+     * How many mistakes the guessers made
+     *
+     * @param gameIdentifier
+     * @return int 0-9
      */
-    public int howManyTriesAreLeft(String gameIdentifier);
+    int getMistakesMade(String gameIdentifier);
 
     /**
      * gets if the word has been guessed.
