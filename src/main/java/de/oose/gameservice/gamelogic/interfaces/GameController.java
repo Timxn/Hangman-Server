@@ -23,7 +23,7 @@ public interface GameController {
      * @param username
      * @return 1000-9999 as identifier for the game
      */
-    public String createGame(String username);
+    public String createGame(String username) throws Exception;
 
     /**
      * starts a new game.
@@ -96,6 +96,13 @@ public interface GameController {
      * @return
      */
     public boolean getStarted(String gameIdentifier);
+
+    /**
+     * get if god entered a valid word
+     * @param gameIdentifier
+     * @return
+     */
+    public boolean getWorded(String gameIdentifier);
 
     /**
      * Return the Username of the User whose turn it is to guess a character
