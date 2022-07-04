@@ -44,8 +44,7 @@ public class ClientThread implements Runnable {
             label:
             while (true) {
                 JSONObject message = new JSONObject(objectInputStream.readUTF());
-                log.info("DEBUG");
-//                log.info("Message received with command " + message.get("command") + " and Payload " + message.get("payload"));
+//                log.info("DEBUG");
                 switch (message.getString("command")) {
                     // login page
                     case "createRoom":  // payload is "username"
@@ -100,6 +99,15 @@ public class ClientThread implements Runnable {
                         break;
                     }
 
+                    case "setWord": {
+                        Main.gameController.setWord(gameIdentifier, message.getString("word"));
+                        JSONObject response = new JSONObject();
+                        response.put("command", "response")
+                                .put("status", "successful");
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
+
                     case "isStarted": {
                         JSONObject response = new JSONObject();
                         response.put("command", "response")
@@ -115,7 +123,7 @@ public class ClientThread implements Runnable {
                     case "updateGame": {
                         JSONObject response = new JSONObject();
                         response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt())
-                                .put("triesLeft", Main.gameController.howManyTriesAreLeft(gameIdentifier))
+                                .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
                                 .put("characterList", Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier))
                                 .put("word", Main.gameController.getWord(this.gameIdentifier));
                         objectOutputStream.writeUTF(response.toString());
