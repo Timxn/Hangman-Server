@@ -7,6 +7,7 @@ public class RandomStringImpl {
      * @return the generated string
      */
     public static String getRandomString(int n) {
+        if (n==0) throw new IllegalArgumentException("n must not be 0");
         final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789";
 
         StringBuilder sb = new StringBuilder(n);
