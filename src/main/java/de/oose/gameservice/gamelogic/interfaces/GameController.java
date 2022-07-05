@@ -53,16 +53,10 @@ public interface GameController {
     public void guessLetter(String gameIdentifier, char letter);
 
     /**
-     * Get the global scoreboard, provided with the integer mapped to the Username in a Hashmap
-     * @return Hashmap<Username, Points>
-     */
-    public HashMap<String, Integer> getScoreboard();
-
-    /**
      * Get the players of the game in which the player is
      * @return ArrayList<Username>
      */
-    public ArrayList<String> getPlayers(String gameIdentifier);
+    public ArrayList<String> getPlayers(String gameIdentifier) throws Exception;
 
     /**
      * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the information
