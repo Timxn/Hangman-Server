@@ -5,6 +5,7 @@ import de.oose.gameservice.gamelogic.utils.RandomStringImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 public class GameControllerImpl implements GameController {
     ArrayList<GameImpl> allGames;
@@ -34,9 +35,8 @@ public class GameControllerImpl implements GameController {
 
     }
     /**
-     * creates a new game.
-     *
-     * @param username
+     * creates a new game and adds the creator to the player list
+     * @param username of the player
      * @return 0000-ZZZZ as identifier for the game
      */
     @Override
@@ -49,13 +49,20 @@ public class GameControllerImpl implements GameController {
 
     /**
      * starts a new game.
-     *
      * @param gameIdentifier
-     * @return 0 = normal Player, 1 = god
+     * @return true if game start was successfully
      */
     @Override
-    public int startGame(String gameIdentifier) {
-        return 0;
+    public boolean startGame(String gameIdentifier) {
+        try {
+            int index = getIndexByID(gameIdentifier);
+            GameImpl game = allGames.get(index);
+            game.startingGame();
+            allGames.set(index, game);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -104,7 +111,6 @@ public class GameControllerImpl implements GameController {
 
     /**
      * Get the players of the game in which the player is
-     *
      * @param gameIdentifier
      * @return ArrayList<Username>
      */
@@ -187,5 +193,16 @@ public class GameControllerImpl implements GameController {
     @Override
     public String whoseTurnIsIt() {
         return null;
+    }
+
+    private int getIndexByID(String gameIdentifier) {
+        int index = 0;
+        for (GameImpl game: allGames) {
+            if(game.getGameID().equals(gameIdentifier)){
+                return index;
+            }
+            index++;
+        }
+        throw new IllegalArgumentException("There is no game with this ID");
     }
 }
