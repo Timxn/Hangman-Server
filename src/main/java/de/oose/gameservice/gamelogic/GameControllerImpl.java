@@ -31,8 +31,10 @@ public class GameControllerImpl implements GameController {
      * @param username
      */
     @Override
-    public void leaveGame(String gameIdentifier, String username) {
-
+    public void leaveGame(String gameIdentifier, String username) throws Exception {
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+        game.removePlayer(username);
     }
     /**
      * creates a new game and adds the creator to the player list
@@ -73,7 +75,10 @@ public class GameControllerImpl implements GameController {
      * @return true if god...
      */
     @Override
-    public boolean isGod(String gameIdentifier, String username) {
+    public boolean isGod(String gameIdentifier, String username) throws Exception {
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+
         return false;
     }
 

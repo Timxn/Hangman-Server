@@ -29,6 +29,12 @@ public class GameImpl {
         players.add(new PlayerImpl(username));
     }
 
+    public void removePlayer(String username) throws Exception {
+        if (username.isBlank()) throw new Exception("Username is empty");
+        if (!players.contains(new PlayerImpl(username))) throw new Exception("User not in game");
+        players.remove(new PlayerImpl(username));
+    }
+
     public String getGameID() {
         return gameID;
     }
