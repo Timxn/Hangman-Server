@@ -1,6 +1,11 @@
 package de.oose.gameservice.gamelogic.utils;
 
 public class RandomStringImpl {
+    /**
+     * generates a String with length n which includes random letters and numbers
+     * @param n length of the String
+     * @return the generated string
+     */
     public static String getRandomString(int n) {
         final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789";
 
