@@ -11,7 +11,7 @@ public class GameImpl {
 
     private boolean isStarted = false;
     public GameImpl(String firstPlayer) {
-        players = new ArrayList<PlayerImpl>();
+        players = new ArrayList<>();
         this.gameID = createGameID();
         players.add(new PlayerImpl(firstPlayer));
     }
@@ -27,7 +27,9 @@ public class GameImpl {
 
     public void addPlayer(String username) throws Exception {
         if (username.isBlank()) throw new Exception("Username is empty");
-        if (players.contains(new PlayerImpl(username))) throw new Exception("User already in game");
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getUsername().equals(username)) throw new Exception("User already in game");
+        }
         players.add(new PlayerImpl(username));
     }
 

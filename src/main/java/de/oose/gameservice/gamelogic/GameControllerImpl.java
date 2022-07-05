@@ -3,13 +3,12 @@ package de.oose.gameservice.gamelogic;
 import de.oose.gameservice.gamelogic.interfaces.GameController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GameControllerImpl implements GameController {
     ArrayList<GameImpl> allGames;
 
     public GameControllerImpl(){
-        allGames = new ArrayList<GameImpl>();
+        allGames = new ArrayList<>();
     }
     /**
      * Adds a user to an existing game.
@@ -102,23 +101,18 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
-     * Get the global scoreboard, provided with the integer mapped to the Username in a Hashmap
-     *
-     * @return Hashmap<Username, Points>
-     */
-    @Override
-    public HashMap<String, Integer> getScoreboard() {
-        return null;
-    }
-
-    /**
      * Get the players of the game in which the player is
      * @param gameIdentifier
      * @return ArrayList<Username>
      */
     @Override
-    public ArrayList<String> getPlayers(String gameIdentifier) {
-        return null;
+    public ArrayList<String> getPlayers(String gameIdentifier) throws Exception {
+        ArrayList<PlayerImpl> players = new ArrayList<>(allGames.get(getIndexByID(gameIdentifier)).getPlayers());
+        ArrayList<String> usernames = new ArrayList<>();
+        for (PlayerImpl player: players) {
+            usernames.add(player.getUsername());
+        }
+        return usernames;
     }
 
     /**
