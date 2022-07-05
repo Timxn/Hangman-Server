@@ -11,11 +11,7 @@ public class GameImpl {
 
     public GameImpl(String firstPlayer) {
         this.gameID = createGameID();
-        players.add(new PlayerImpl(firstPlayer, 0));
-    }
-
-    public String getGameID() {
-        return gameID;
+        players.add(new PlayerImpl(firstPlayer));
     }
 
     public void startingGame() throws Exception {
@@ -25,6 +21,16 @@ public class GameImpl {
         PlayerImpl player = players.get(index);
         player.setGod(true);
         players.set(index, player);
+    }
+
+    public void addPlayer(String username) throws Exception {
+        if (username.isBlank()) throw new Exception("Username is empty");
+        if (players.contains(new PlayerImpl(username))) throw new Exception("User already in game");
+        players.add(new PlayerImpl(username));
+    }
+
+    public String getGameID() {
+        return gameID;
     }
 
     private String createGameID(){
