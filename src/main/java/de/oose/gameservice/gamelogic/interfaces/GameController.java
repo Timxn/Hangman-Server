@@ -16,7 +16,7 @@ public interface GameController {
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void leaveGame(String gameIdentifier, String username);
+    public void leaveGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * creates a new game.
@@ -38,7 +38,7 @@ public interface GameController {
      * @param username
      * @return true if god...
      */
-    public boolean isGod(String gameIdentifier, String username);
+    public boolean isGod(String gameIdentifier, String username) throws Exception;
 
     /**
      * gives god the ability to set the word for the next round.
