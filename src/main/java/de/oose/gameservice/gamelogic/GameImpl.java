@@ -39,6 +39,15 @@ public class GameImpl {
         return gameID;
     }
 
+    public PlayerImpl getPlayerByUsername(String username) throws Exception {
+        for (PlayerImpl player: players) {
+            if(player.getUsername().equals(username)){
+                return player;
+            }
+        }
+        throw new Exception("There is no player with this username");
+    }
+
     private String createGameID(){
         gameID = RandomStringImpl.getRandomString(4);
         return gameID;

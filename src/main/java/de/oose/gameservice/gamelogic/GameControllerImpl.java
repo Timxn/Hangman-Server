@@ -76,10 +76,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public boolean isGod(String gameIdentifier, String username) throws Exception {
-        int index = getIndexByID(gameIdentifier);
-        GameImpl game = allGames.get(index);
-
-        return false;
+        return allGames.get(getIndexByID(gameIdentifier)).getPlayerByUsername(username).isGod();
     }
 
     /**
