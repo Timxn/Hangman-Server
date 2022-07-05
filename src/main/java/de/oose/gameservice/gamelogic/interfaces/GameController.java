@@ -9,27 +9,28 @@ public interface GameController {
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void joinGame(String gameIdentifier, String username);
+    public void joinGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * removes a user from an existing game.
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void leaveGame(String gameIdentifier, String username);
+    public void leaveGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * creates a new game.
      * @param username
      * @return 1000-9999 as identifier for the game
      */
-    public String createGame(String username);
+    public String createGame(String username) throws Exception;
 
     /**
      * starts a new game.
-     * @return 0 = normal Player, 1 = god
+     * @param gameIdentifier
+     * @return true if game start was successfully
      */
-    public int startGame(String gameIdentifier);
+    public boolean startGame(String gameIdentifier);
 
     /**
      * returns if a player is god
@@ -37,7 +38,7 @@ public interface GameController {
      * @param username
      * @return true if god...
      */
-    public boolean isGod(String gameIdentifier, String username);
+    public boolean isGod(String gameIdentifier, String username) throws Exception;
 
     /**
      * gives god the ability to set the word for the next round.
@@ -96,6 +97,13 @@ public interface GameController {
      * @return
      */
     public boolean getStarted(String gameIdentifier);
+
+    /**
+     * get if god entered a valid word
+     * @param gameIdentifier
+     * @return
+     */
+    public boolean getWorded(String gameIdentifier);
 
     /**
      * Return the Username of the User whose turn it is to guess a character
