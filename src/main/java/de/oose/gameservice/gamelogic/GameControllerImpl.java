@@ -1,11 +1,9 @@
 package de.oose.gameservice.gamelogic;
 
 import de.oose.gameservice.gamelogic.interfaces.GameController;
-import de.oose.gameservice.gamelogic.utils.RandomStringImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 public class GameControllerImpl implements GameController {
     ArrayList<GameImpl> allGames;
@@ -20,8 +18,10 @@ public class GameControllerImpl implements GameController {
      * @param username
      */
     @Override
-    public void joinGame(String gameIdentifier, String username) {
-
+    public void joinGame(String gameIdentifier, String username) throws Exception {
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+        game.addPlayer(username);
     }
 
     /**
@@ -195,7 +195,7 @@ public class GameControllerImpl implements GameController {
         return null;
     }
 
-    private int getIndexByID(String gameIdentifier) {
+    private int getIndexByID(String gameIdentifier) throws Exception {
         int index = 0;
         for (GameImpl game: allGames) {
             if(game.getGameID().equals(gameIdentifier)){
@@ -203,6 +203,6 @@ public class GameControllerImpl implements GameController {
             }
             index++;
         }
-        throw new IllegalArgumentException("There is no game with this ID");
+        throw new Exception("There is no game with this ID");
     }
 }
