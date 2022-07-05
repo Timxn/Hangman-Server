@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 public class GameImpl {
     private String gameID;
-    private ArrayList<PlayerImpl> players;
-    private boolean isStarted = false;
 
+    private ArrayList<PlayerImpl> players;
+
+    private boolean isStarted = false;
     public GameImpl(String firstPlayer) {
+        players = new ArrayList<PlayerImpl>();
         this.gameID = createGameID();
         players.add(new PlayerImpl(firstPlayer));
     }
@@ -35,10 +37,6 @@ public class GameImpl {
         players.remove(new PlayerImpl(username));
     }
 
-    public String getGameID() {
-        return gameID;
-    }
-
     public PlayerImpl getPlayerByUsername(String username) throws Exception {
         for (PlayerImpl player: players) {
             if(player.getUsername().equals(username)){
@@ -46,6 +44,14 @@ public class GameImpl {
             }
         }
         throw new Exception("There is no player with this username");
+    }
+
+    public String getGameID() {
+        return gameID;
+    }
+
+    public ArrayList<PlayerImpl> getPlayers() {
+        return players;
     }
 
     private String createGameID(){
