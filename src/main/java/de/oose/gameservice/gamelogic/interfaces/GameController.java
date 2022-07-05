@@ -27,9 +27,10 @@ public interface GameController {
 
     /**
      * starts a new game.
-     * @return 0 = normal Player, 1 = god
+     * @param gameIdentifier
+     * @return true if game start was successfully
      */
-    public int startGame(String gameIdentifier);
+    public boolean startGame(String gameIdentifier);
 
     /**
      * returns if a player is god
