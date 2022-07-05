@@ -9,7 +9,7 @@ public interface GameController {
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void joinGame(String gameIdentifier, String username);
+    public void joinGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * removes a user from an existing game.
