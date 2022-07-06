@@ -230,7 +230,7 @@ public class ClientThread implements Runnable {
 
                     case "getMistakes": {
                         JSONObject response = new JSONObject()
-                                .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
+                                .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier));
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
