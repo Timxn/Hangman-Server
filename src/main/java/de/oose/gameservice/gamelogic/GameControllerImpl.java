@@ -20,6 +20,7 @@ public class GameControllerImpl implements GameController {
     public void joinGame(String gameIdentifier, String username) throws Exception {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
+        if (game.isStarted()) throw new Exception("Spiel ist schon gestartet!");
         game.addPlayer(username);
     }
 
@@ -85,8 +86,9 @@ public class GameControllerImpl implements GameController {
      * @param word           the new word
      */
     @Override
-    public void setWord(String gameIdentifier, String word) {
-
+    public void setWord(String gameIdentifier, String word, String username) throws Exception {
+        if (!isGod(gameIdentifier, username)) throw new Exception("This player is not allowed to do that!");
+        //TODO setWord
     }
 
     /**
@@ -116,10 +118,10 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
-     * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the information
+     * Get the word but with all unknown characters replaced by _ and split by spaces so the client of the user has the minimum of the information
      *
      * @param gameIdentifier
-     * @return String (the word ex.: W NULL R D) (WORD) or null if no word exists yet (god has not yet set one)
+     * @return String (the word ex.: W _ R D) (WORD) or null if no word exists yet (god has not yet set one)
      */
     @Override
     public ArrayList<Character> getWord(String gameIdentifier) {
@@ -166,8 +168,8 @@ public class GameControllerImpl implements GameController {
      * @return
      */
     @Override
-    public boolean getStarted(String gameIdentifier) {
-        return false;
+    public boolean getStarted(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).isStarted();
     }
 
     /**
@@ -177,8 +179,8 @@ public class GameControllerImpl implements GameController {
      * @return
      */
     @Override
-    public boolean getWorded(String gameIdentifier) {
-        return false;
+    public boolean getWorded(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).isWorded();
     }
 
     /**
