@@ -116,16 +116,21 @@ public class ClientThread implements Runnable {
                     // waiting page
                     case "startGame": {
                         JSONObject response = new JSONObject();
+                        boolean tmp;
                         try {
-                            Main.gameController.startGame(gameIdentifier);
-                            log.info(gameIdentifier + " got started");
+                            tmp = Main.gameController.startGame(gameIdentifier);
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        response.put("status", "successful");
+                        if (tmp) {
+                            log.info(gameIdentifier + " got started");
+                            response.put("status", "successful");
+                        } else {
+                            response.put("status", "Not enough players");
+                        }
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
