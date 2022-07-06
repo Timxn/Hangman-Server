@@ -1,19 +1,21 @@
 package de.oose.gameservice.gamelogic;
 
-import de.oose.gameservice.gamelogic.utils.RandomStringImpl;
+import de.oose.gameservice.gamelogic.utils.RandomString;
 
 import java.util.ArrayList;
 
 public class GameImpl {
     private String gameID;
-
-    private ArrayList<PlayerImpl> players;
-
+    private final ArrayList<PlayerImpl> players;
+    private WordImpl word;
     private boolean isStarted = false;
-    public GameImpl(String firstPlayer) {
+    private boolean worded = false;
+
+    public GameImpl(String firstPlayer) throws Exception {
         players = new ArrayList<>();
         this.gameID = createGameID();
         players.add(new PlayerImpl(firstPlayer));
+        word = new WordImpl();
     }
 
     public void startingGame() throws Exception {
@@ -24,17 +26,14 @@ public class GameImpl {
         player.setGod(true);
         players.set(index, player);
     }
-
     public void addPlayer(String username) throws Exception {
-        if (username.isBlank()) throw new Exception("Username is empty");
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) throw new Exception("User already in game");
+        for (PlayerImpl player : players) {
+            if (player.getUsername().equals(username)) throw new Exception("User already in game");
         }
         players.add(new PlayerImpl(username));
     }
 
     public void removePlayer(String username) throws Exception {
-        if (username.isBlank()) throw new Exception("Username is empty");
         if (!players.contains(new PlayerImpl(username))) throw new Exception("User not in game");
         players.remove(new PlayerImpl(username));
     }
@@ -56,8 +55,24 @@ public class GameImpl {
         return players;
     }
 
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    public void setStarted(boolean started) {
+        isStarted = started;
+    }
+
+    public boolean isWorded() {
+        return worded;
+    }
+
+    public void setWorded(boolean worded) {
+        this.worded = worded;
+    }
+
     private String createGameID(){
-        gameID = RandomStringImpl.getRandomString(4);
+        gameID = RandomString.getRandomString(4);
         return gameID;
     }
 }

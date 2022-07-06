@@ -30,7 +30,7 @@ public interface GameController {
      * @param gameIdentifier
      * @return true if game start was successfully
      */
-    public boolean startGame(String gameIdentifier);
+    public boolean startGame(String gameIdentifier) throws Exception;
 
     /**
      * returns if a player is god
@@ -44,7 +44,7 @@ public interface GameController {
      * gives god the ability to set the word for the next round.
      * @param word the new word
      */
-    public void setWord(String gameIdentifier, String word);
+    void setWord(String gameIdentifier, String word, String username) throws Exception;
 
     /**
      * make a guess
@@ -90,14 +90,14 @@ public interface GameController {
      * @param gameIdentifier
      * @return
      */
-    public boolean getStarted(String gameIdentifier);
+    public boolean getStarted(String gameIdentifier) throws Exception;
 
     /**
      * get if god entered a valid word
      * @param gameIdentifier
      * @return
      */
-    public boolean getWorded(String gameIdentifier);
+    public boolean getWorded(String gameIdentifier) throws Exception;
 
     /**
      * Return the Username of the User whose turn it is to guess a character
