@@ -2,7 +2,7 @@ package de.oose.gameservice.gamelogic;
 
 public class WordImpl {
     private String word = null;
-    private String hiddenWord = null;
+    private String hiddenWord = "";
 
     public String getWord() {
         return hiddenWord;
