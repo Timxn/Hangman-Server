@@ -30,7 +30,7 @@ public interface GameController {
      * @param gameIdentifier
      * @return true if game start was successfully
      */
-    public boolean startGame(String gameIdentifier);
+    public boolean startGame(String gameIdentifier) throws Exception;
 
     /**
      * returns if a player is god
