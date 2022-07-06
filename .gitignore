@@ -7,3 +7,5 @@ gradle-app.setting
 
 !gradle-wrapper.jar
 !gradle-wrapper.properties
+/src/main/resources/myapp.log
+/src/main/resources/myapp.log.lck

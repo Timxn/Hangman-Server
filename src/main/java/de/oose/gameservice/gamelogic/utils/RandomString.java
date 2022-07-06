@@ -1,6 +1,6 @@
 package de.oose.gameservice.gamelogic.utils;
 
-public class RandomStringImpl {
+public class RandomString {
     /**
      * generates a String with length n which includes random letters and numbers
      * @param n length of the String
