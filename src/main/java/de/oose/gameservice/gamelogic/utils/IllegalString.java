@@ -2,10 +2,10 @@ package de.oose.gameservice.gamelogic.utils;
 
 public class IllegalString {
     public static boolean isAlpha(String text) {
-        return text.chars().allMatch(Character::isLetter);
+        return text != null && text.chars().allMatch(Character::isLetter);
     }
 
     public static boolean isAlphaNumeric(String text) {
-        return text.chars().allMatch(Character::isLetterOrDigit);
+        return text != null && text.chars().allMatch(Character::isLetterOrDigit);
     }
 }
