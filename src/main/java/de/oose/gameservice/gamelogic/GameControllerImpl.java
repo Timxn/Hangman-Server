@@ -1,7 +1,6 @@
 package de.oose.gameservice.gamelogic;
 
 import de.oose.gameservice.gamelogic.interfaces.GameController;
-import de.oose.gameservice.gamelogic.utils.IllegalString;
 
 import java.util.ArrayList;
 
@@ -44,8 +43,6 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public String createGame(String username) throws Exception {
-        if (username.isBlank()) throw new Exception("Username is empty");
-        if (!IllegalString.isAlpha(username)) throw new Exception("Invalid username!");
         GameImpl game = new GameImpl(username);
         allGames.add(game);
         return game.getGameID();
