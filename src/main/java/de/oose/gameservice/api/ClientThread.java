@@ -49,7 +49,7 @@ public class ClientThread implements Runnable {
                     // login page
                     case "createRoom":  // payload is "username"
                     {
-                        this.username = message.getString("username");
+                        this.username = message.getString("username").toUpperCase();
                         this.gameIdentifier = Main.gameController.createGame(username);
                         log.info("Created Room with ID: " + gameIdentifier);
                         JSONObject response = new JSONObject();
@@ -61,8 +61,8 @@ public class ClientThread implements Runnable {
                     }
                     case "joinRoom":    // payload is "gameID;username"
                     {
-                        this.gameIdentifier = message.getString("gameID");
-                        this.username = message.getString("username");
+                        this.username = message.getString("username").toUpperCase();
+                        this.gameIdentifier = message.getString("gameID").toUpperCase();
                         Main.gameController.joinGame(gameIdentifier, username);
                         log.info("Joined Room " + gameIdentifier);
                         JSONObject response = new JSONObject()
@@ -100,7 +100,7 @@ public class ClientThread implements Runnable {
                     }
 
                     case "setWord": {
-                        Main.gameController.setWord(gameIdentifier, message.getString("word"));
+                        Main.gameController.setWord(gameIdentifier, message.getString("word").toUpperCase(), username); //Hallo Justus, username added
                         JSONObject response = new JSONObject();
                         response.put("command", "response")
                                 .put("status", "successful");
@@ -117,7 +117,7 @@ public class ClientThread implements Runnable {
                     }
 
                     case "guess":
-                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").charAt(0));
+                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0));
                         objectOutputStream.writeUTF(new JSONObject("status", "successful").toString());
                         break;
                     case "updateGame": {
