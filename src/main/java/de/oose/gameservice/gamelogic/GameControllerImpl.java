@@ -1,6 +1,7 @@
 package de.oose.gameservice.gamelogic;
 
 import de.oose.gameservice.gamelogic.interfaces.GameController;
+import de.oose.gameservice.gamelogic.utils.IllegalString;
 
 import java.util.ArrayList;
 
@@ -89,7 +90,11 @@ public class GameControllerImpl implements GameController {
     @Override
     public void setWord(String gameIdentifier, String word, String username) throws Exception {
         if (!isGod(gameIdentifier, username)) throw new Exception("This player is not allowed to do that!");
-        //TODO setWord
+        if (!IllegalString.isAlpha(word)) throw new Exception("Illegal word");
+        if (word.length() < 2) throw new Exception("Word to short");
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+        game.setWord(word);
     }
 
     /**
@@ -125,8 +130,8 @@ public class GameControllerImpl implements GameController {
      * @return String (the word ex.: W _ R D) (WORD) or null if no word exists yet (god has not yet set one)
      */
     @Override
-    public ArrayList<Character> getWord(String gameIdentifier) {
-        return null;
+    public String getWord(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).getWordObject().getWord();
     }
 
     /**
@@ -181,7 +186,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public boolean getWorded(String gameIdentifier) throws Exception {
-        return allGames.get(getIndexByID(gameIdentifier)).isWorded();
+        return allGames.get(getIndexByID(gameIdentifier)).getWordObject().getWord() == null;
     }
 
     /**
