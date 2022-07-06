@@ -9,9 +9,7 @@ public class GameImpl {
     private final ArrayList<PlayerImpl> players;
     private WordImpl word;
     private boolean isStarted = false;
-    private boolean worded = false;
-
-    public GameImpl(String firstPlayer) throws Exception {
+    public GameImpl(String firstPlayer){
         players = new ArrayList<>();
         this.gameID = createGameID();
         players.add(new PlayerImpl(firstPlayer));
@@ -25,14 +23,15 @@ public class GameImpl {
         PlayerImpl player = players.get(index);
         player.setGod(true);
         players.set(index, player);
+        setStarted(true);
     }
+
     public void addPlayer(String username) throws Exception {
         for (PlayerImpl player : players) {
             if (player.getUsername().equals(username)) throw new Exception("User already in game");
         }
         players.add(new PlayerImpl(username));
     }
-
     public void removePlayer(String username) throws Exception {
         if (!players.contains(new PlayerImpl(username))) throw new Exception("User not in game");
         players.remove(new PlayerImpl(username));
@@ -63,12 +62,12 @@ public class GameImpl {
         isStarted = started;
     }
 
-    public boolean isWorded() {
-        return worded;
+    public WordImpl getWordObject() {
+        return word;
     }
 
-    public void setWorded(boolean worded) {
-        this.worded = worded;
+    public void setWord(String word) throws Exception {
+        this.word.setWord(word);
     }
 
     private String createGameID(){
