@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import de.oose.gameservice.gamelogic.GameControllerImpl;
+import de.oose.gameservice.gamelogic.utils.IllegalString;
 import org.json.*;
 
 
@@ -50,6 +51,8 @@ public class ClientThread implements Runnable {
                     case "createRoom":  // payload is "username"
                     {
                         this.username = message.getString("username").toUpperCase();
+                        if (username.isBlank()) throw new Exception("Username is empty");
+                        if (!IllegalString.isAlpha(username)) throw new Exception("Invalid username!");
                         this.gameIdentifier = Main.gameController.createGame(username);
                         log.info("Created Room with ID: " + gameIdentifier);
                         JSONObject response = new JSONObject();
@@ -62,7 +65,10 @@ public class ClientThread implements Runnable {
                     case "joinRoom":    // payload is "gameID;username"
                     {
                         this.username = message.getString("username").toUpperCase();
+                        if (username.isBlank()) throw new Exception("Username is empty");
+                        if (!IllegalString.isAlpha(username)) throw new Exception("Invalid username!");
                         this.gameIdentifier = message.getString("gameID").toUpperCase();
+                        if (!IllegalString.isAlphaNumeric(gameIdentifier)) throw new Exception("Illegal game identifier");
                         Main.gameController.joinGame(gameIdentifier, username);
                         log.info("Joined Room " + gameIdentifier);
                         JSONObject response = new JSONObject()
