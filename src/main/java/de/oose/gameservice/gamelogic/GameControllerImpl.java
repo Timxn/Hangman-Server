@@ -1,6 +1,7 @@
 package de.oose.gameservice.gamelogic;
 
 import de.oose.gameservice.gamelogic.interfaces.GameController;
+import de.oose.gameservice.gamelogic.utils.IllegalString;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class GameControllerImpl implements GameController {
     public void joinGame(String gameIdentifier, String username) throws Exception {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
-        if (game.isStarted()) throw new Exception("Spiel ist schon gestartet!");
+        if (game.isStarted()) throw new Exception("Game is already in progress and cant be joined!");
         game.addPlayer(username);
     }
 
@@ -43,10 +44,11 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public String createGame(String username) throws Exception {
-           if (username.isBlank()) throw new Exception("Username is empty");
-           GameImpl game = new GameImpl(username);
-           allGames.add(game);
-           return game.getGameID();
+        if (username.isBlank()) throw new Exception("Username is empty");
+        if (!IllegalString.isAlpha(username)) throw new Exception("Invalid username!");
+        GameImpl game = new GameImpl(username);
+        allGames.add(game);
+        return game.getGameID();
     }
 
     /**
@@ -55,14 +57,16 @@ public class GameControllerImpl implements GameController {
      * @return true if game start was successfully
      */
     @Override
-    public boolean startGame(String gameIdentifier) {
+    public boolean startGame(String gameIdentifier) throws Exception {
         try {
             int index = getIndexByID(gameIdentifier);
             GameImpl game = allGames.get(index);
+            if (game.isStarted()) throw new Exception("Game cant be started again!");
             game.startingGame();
             allGames.set(index, game);
             return true;
         } catch (Exception e) {
+            if (e.getMessage().equals("Game cant be started again!")) throw e;
             return false;
         }
     }
