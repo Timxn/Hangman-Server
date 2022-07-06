@@ -3,9 +3,13 @@ package de.oose.gameservice.gamelogic;
 import de.oose.gameservice.gamelogic.interfaces.GameController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GameControllerImpl implements GameController {
+    ArrayList<GameImpl> allGames;
+
+    public GameControllerImpl(){
+        allGames = new ArrayList<>();
+    }
     /**
      * Adds a user to an existing game.
      *
@@ -13,8 +17,10 @@ public class GameControllerImpl implements GameController {
      * @param username
      */
     @Override
-    public void joinGame(String gameIdentifier, String username) {
-
+    public void joinGame(String gameIdentifier, String username) throws Exception {
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+        game.addPlayer(username);
     }
 
     /**
@@ -24,39 +30,53 @@ public class GameControllerImpl implements GameController {
      * @param username
      */
     @Override
-    public void leaveGame(String gameIdentifier, String username) {
-
+    public void leaveGame(String gameIdentifier, String username) throws Exception {
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+        game.removePlayer(username);
     }
-
     /**
-     * creates a new game.
-     *
-     * @param username
-     * @return 1000-9999 as identifier for the game
+     * creates a new game and adds the creator to the player list
+     * @param username of the player
+     * @return 0000-ZZZZ as identifier for the game
      */
     @Override
-    public String createGame(String username) {
-        return "null";
+    public String createGame(String username) throws Exception {
+           if (username.isBlank()) throw new Exception("Username is empty");
+           GameImpl game = new GameImpl(username);
+           allGames.add(game);
+           return game.getGameID();
     }
 
     /**
      * starts a new game.
-     *
      * @param gameIdentifier
-     * @return 0 = normal Player, 1 = god
+     * @return true if game start was successfully
      */
     @Override
-    public int startGame(String gameIdentifier) {
-        return 0;
+    public boolean startGame(String gameIdentifier) {
+        try {
+            int index = getIndexByID(gameIdentifier);
+            GameImpl game = allGames.get(index);
+            game.startingGame();
+            allGames.set(index, game);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
      * returns if a player is god
+     *
      * @param gameIdentifier
      * @param username
      * @return true if god...
      */
-    public boolean isGod(String gameIdentifier, String username) {return true;}
+    @Override
+    public boolean isGod(String gameIdentifier, String username) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).getPlayerByUsername(username).isGod();
+    }
 
     /**
      * gives god the ability to set the word for the next round.
@@ -81,24 +101,18 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
-     * Get the global scoreboard, provided with the integer mapped to the Username in a Hashmap
-     *
-     * @return Hashmap<Username, Points>
-     */
-    @Override
-    public HashMap<String, Integer> getScoreboard() {
-        return new HashMap<>();
-    }
-
-    /**
      * Get the players of the game in which the player is
-     *
      * @param gameIdentifier
      * @return ArrayList<Username>
      */
     @Override
-    public ArrayList<String> getPlayers(String gameIdentifier) {
-        return new ArrayList<>();
+    public ArrayList<String> getPlayers(String gameIdentifier) throws Exception {
+        ArrayList<PlayerImpl> players = new ArrayList<>(allGames.get(getIndexByID(gameIdentifier)).getPlayers());
+        ArrayList<String> usernames = new ArrayList<>();
+        for (PlayerImpl player: players) {
+            usernames.add(player.getUsername());
+        }
+        return usernames;
     }
 
     /**
@@ -109,7 +123,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public ArrayList<Character> getWord(String gameIdentifier) {
-        return new ArrayList<>();
+        return null;
     }
 
     /**
@@ -120,7 +134,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) {
-        return new ArrayList<>();
+        return null;
     }
 
     /**
@@ -157,12 +171,34 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
+     * get if god entered a valid word
+     *
+     * @param gameIdentifier
+     * @return
+     */
+    @Override
+    public boolean getWorded(String gameIdentifier) {
+        return false;
+    }
+
+    /**
      * Return the Username of the User whose turn it is to guess a character
      *
      * @return String (Username ex.: Test)
      */
     @Override
     public String whoseTurnIsIt() {
-        return "null";
+        return null;
+    }
+
+    private int getIndexByID(String gameIdentifier) throws Exception {
+        int index = 0;
+        for (GameImpl game: allGames) {
+            if(game.getGameID().equals(gameIdentifier)){
+                return index;
+            }
+            index++;
+        }
+        throw new Exception("There is no game with this ID");
     }
 }

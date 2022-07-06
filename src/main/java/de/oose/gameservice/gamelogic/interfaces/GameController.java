@@ -9,27 +9,28 @@ public interface GameController {
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void joinGame(String gameIdentifier, String username);
+    public void joinGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * removes a user from an existing game.
      * @param username
      * @param gameIdentifier the identifier of the game
      */
-    public void leaveGame(String gameIdentifier, String username);
+    public void leaveGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * creates a new game.
      * @param username
      * @return 1000-9999 as identifier for the game
      */
-    public String createGame(String username);
+    public String createGame(String username) throws Exception;
 
     /**
      * starts a new game.
-     * @return 0 = normal Player, 1 = god
+     * @param gameIdentifier
+     * @return true if game start was successfully
      */
-    public int startGame(String gameIdentifier);
+    public boolean startGame(String gameIdentifier);
 
     /**
      * returns if a player is god
@@ -37,7 +38,7 @@ public interface GameController {
      * @param username
      * @return true if god...
      */
-    public boolean isGod(String gameIdentifier, String username);
+    public boolean isGod(String gameIdentifier, String username) throws Exception;
 
     /**
      * gives god the ability to set the word for the next round.
@@ -52,16 +53,10 @@ public interface GameController {
     public void guessLetter(String gameIdentifier, char letter);
 
     /**
-     * Get the global scoreboard, provided with the integer mapped to the Username in a Hashmap
-     * @return Hashmap<Username, Points>
-     */
-    public HashMap<String, Integer> getScoreboard();
-
-    /**
      * Get the players of the game in which the player is
      * @return ArrayList<Username>
      */
-    public ArrayList<String> getPlayers(String gameIdentifier);
+    public ArrayList<String> getPlayers(String gameIdentifier) throws Exception;
 
     /**
      * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the information
@@ -96,6 +91,13 @@ public interface GameController {
      * @return
      */
     public boolean getStarted(String gameIdentifier);
+
+    /**
+     * get if god entered a valid word
+     * @param gameIdentifier
+     * @return
+     */
+    public boolean getWorded(String gameIdentifier);
 
     /**
      * Return the Username of the User whose turn it is to guess a character
