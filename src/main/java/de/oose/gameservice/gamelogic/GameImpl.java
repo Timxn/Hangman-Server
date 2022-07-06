@@ -9,7 +9,7 @@ public class GameImpl {
     private final ArrayList<PlayerImpl> players;
     private WordImpl word;
     private boolean isStarted = false;
-    public GameImpl(String firstPlayer) throws Exception {
+    public GameImpl(String firstPlayer){
         players = new ArrayList<>();
         this.gameID = createGameID();
         players.add(new PlayerImpl(firstPlayer));
@@ -23,6 +23,7 @@ public class GameImpl {
         PlayerImpl player = players.get(index);
         player.setGod(true);
         players.set(index, player);
+        setStarted(true);
     }
 
     public void addPlayer(String username) throws Exception {
