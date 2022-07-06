@@ -199,7 +199,7 @@ public class ClientThread implements Runnable {
                             break;
                         }
                         response.put("status", "successful")
-                                .put("hasWord", isStarted);
+                                .put("isStarted", isStarted);
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
