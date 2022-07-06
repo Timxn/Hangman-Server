@@ -62,7 +62,7 @@ public interface GameController {
      * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the information
      * @return String (the word ex.: W NULL R D) (WORD) or null if no word exists yet (god has not yet set one)
      */
-    public String getWord(String gameIdentifier);
+    public String getWord(String gameIdentifier) throws Exception;
 
     /**
      * Get all characters that have been tried in an ArrayList<Character>
