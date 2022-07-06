@@ -1,16 +1,15 @@
 package de.oose.gameservice.api;
 
 import de.oose.gameservice.Main;
+import de.oose.gameservice.gamelogic.utils.IllegalString;
+import org.json.JSONObject;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
-
-import de.oose.gameservice.gamelogic.GameControllerImpl;
-import de.oose.gameservice.gamelogic.utils.IllegalString;
-import org.json.*;
 
 
 public class ClientThread implements Runnable {
@@ -172,7 +171,6 @@ public class ClientThread implements Runnable {
 
                     case "setWord": {
                         JSONObject response = new JSONObject();
-                        boolean isStarted;
                         try {
                             Main.gameController.setWord(gameIdentifier, message.getString("word").toUpperCase(), username);
                             log.info(message.getString("word") + " is new word");
