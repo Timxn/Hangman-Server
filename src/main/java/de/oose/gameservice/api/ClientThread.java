@@ -244,11 +244,15 @@ public class ClientThread implements Runnable {
 
                     case "updateGame": {
                         JSONObject response = new JSONObject();
-                        response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt(gameIdentifier))
-                                .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
+                        response.put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
                                 .put("characterList", Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier))
                                 .put("word", Main.gameController.getWord(this.gameIdentifier))
                                 .put("wordIsGuessed", Main.gameController.getWordGuessed(gameIdentifier));
+                        try {
+                            response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt(gameIdentifier));
+                        } catch (Exception e) {
+                            response.put("whoseTurnIsIt" , "ERROR");
+                        }
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
