@@ -49,7 +49,8 @@ public class ClientThread implements Runnable {
                     // login page
                     case "createRoom":
                     {
-                        this.username = message.getString("username").toUpperCase();
+                        this.username = message.getString("username").toLowerCase();
+                        this.username = this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
                         JSONObject response = new JSONObject();
                         if (username.isBlank()) {
                             response.put("status", "Username is empty");
@@ -80,6 +81,7 @@ public class ClientThread implements Runnable {
                     case "joinRoom":
                     {
                         this.username = message.getString("username").toUpperCase();
+                        this.username = this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
                         this.gameIdentifier = message.getString("gameID").toUpperCase();
                         JSONObject response = new JSONObject();
                         if (username.isBlank()) {
