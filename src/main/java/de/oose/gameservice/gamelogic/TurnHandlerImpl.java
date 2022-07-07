@@ -7,10 +7,11 @@ public class TurnHandlerImpl {
     private int order[];
     ArrayList<Integer> integers;
 
-    public void setOrder(int count) {
+    public void setOrder(int count, int skipper) {
         integers = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            integers.add(i);
+        for (int i = 0; i < count + 1; i++) {
+            if (i != skipper)
+                integers.add(i);
         }
         order  = new int[count];
         for (int i = 0; i < count; i++) {

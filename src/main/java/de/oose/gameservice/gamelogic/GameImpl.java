@@ -26,7 +26,7 @@ public class GameImpl {
         player.setGod(true);
         players.set(index, player);
         setStarted(true);
-        turnHandler.setOrder(players.size());
+        turnHandler.setOrder(players.size() - 1, indexOfGod());
     }
 
     public void addPlayer(String username) throws Exception {
@@ -80,5 +80,15 @@ public class GameImpl {
     private String createGameID(){
         gameID = RandomString.getRandomString(4);
         return gameID;
+    }
+
+    private int indexOfGod() throws Exception {
+        int index = 0;
+        for (PlayerImpl player: players) {
+            if (player.isGod())
+                return index;
+            index++;
+        }
+        throw new Exception("There is no God");
     }
 }
