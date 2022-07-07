@@ -16,7 +16,7 @@ public class TurnHandlerImpl {
         order  = new int[count];
         for (int i = 0; i < count; i++) {
             int temp = (int)((count - i) * Math.random());
-            order[i] = temp;
+            order[i] = integers.get(temp);
             integers.remove(temp);
         }
         currentTurn = order[0];
