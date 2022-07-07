@@ -9,9 +9,9 @@ public class WordImpl {
         for (int i = 0; i <hiddenWord.length() ; i++) {
             sb.append(hiddenWord.charAt(i));
             if (i != hiddenWord.length() - 1)
-                sb.append("X");
+                sb.append(" ");
         }
-        return hiddenWord;
+        return sb.toString();
     }
 
     public void setWord(String word) throws Exception {
