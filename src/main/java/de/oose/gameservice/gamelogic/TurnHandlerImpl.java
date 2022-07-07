@@ -3,12 +3,11 @@ package de.oose.gameservice.gamelogic;
 import java.util.ArrayList;
 
 public class TurnHandlerImpl {
-    int currentTurn;
-    private int order[];
-    ArrayList<Integer> integers;
+    private int currentIndex = 0;
+    private int[] order;
 
     public void setOrder(int count, int skipper) {
-        integers = new ArrayList<>();
+        ArrayList<Integer> integers = new ArrayList<>();
         for (int i = 0; i < count + 1; i++) {
             if (i != skipper)
                 integers.add(i);
@@ -19,10 +18,17 @@ public class TurnHandlerImpl {
             order[i] = integers.get(temp);
             integers.remove(temp);
         }
-        currentTurn = order[0];
+        currentIndex = 0;
     }
 
     public int getCurrentTurn() {
-        return currentTurn;
+        return order[currentIndex];
+    }
+
+    public void nextTurn() {
+        currentIndex++;
+        if (currentIndex == order.length) {
+            currentIndex = 0;
+        }
     }
 }
