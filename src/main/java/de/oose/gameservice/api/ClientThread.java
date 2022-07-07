@@ -163,7 +163,7 @@ public class ClientThread implements Runnable {
                         try {
                             tmp = Main.gameController.isGod(gameIdentifier, username);
                             if (tmp) log.info(username + " is god");
-                            log.info(username + " is not god");
+                            else log.info(username + " is not god");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -198,7 +198,7 @@ public class ClientThread implements Runnable {
                         try {
                             isStarted = Main.gameController.getStarted(gameIdentifier);
                             if (isStarted) log.info(gameIdentifier + " is started");
-                            log.info(gameIdentifier + " is not started");
+                             else log.info(gameIdentifier + " is not started");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -216,8 +216,8 @@ public class ClientThread implements Runnable {
                         boolean hasWord;
                         try {
                             hasWord = Main.gameController.getWorded(gameIdentifier);
-                            if (hasWord) log.info(gameIdentifier + " has Word");
-                            log.info(gameIdentifier + " does not have a word");
+                            if (hasWord) log.info(gameIdentifier + ": " + username + " has Word");
+                            else log.info(gameIdentifier + " does not have a word");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -247,7 +247,8 @@ public class ClientThread implements Runnable {
                         response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt(gameIdentifier))
                                 .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
                                 .put("characterList", Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier))
-                                .put("word", Main.gameController.getWord(this.gameIdentifier));
+                                .put("word", Main.gameController.getWord(this.gameIdentifier))
+                                .put("wordIsGuessed", Main.gameController.getWordGuessed(gameIdentifier));
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
