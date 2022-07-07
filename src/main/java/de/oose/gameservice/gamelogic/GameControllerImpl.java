@@ -19,7 +19,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public void joinGame(String gameIdentifier, String username) throws Exception {
-        if (gameIdentifier.isBlank()) throw new Exception("Please enter a game id");
+        if (gameIdentifier.isBlank()) throw new Exception("Please enter a game ID");
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         if (game.isStarted()) throw new Exception("Game is already in progress and cant be joined!");
