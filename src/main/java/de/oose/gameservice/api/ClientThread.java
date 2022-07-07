@@ -163,7 +163,7 @@ public class ClientThread implements Runnable {
                         try {
                             tmp = Main.gameController.isGod(gameIdentifier, username);
                             if (tmp) log.info(username + " is god");
-                            log.info(username + " is not god");
+                            else log.info(username + " is not god");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -247,7 +247,8 @@ public class ClientThread implements Runnable {
                         response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt())
                                 .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
                                 .put("characterList", Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier))
-                                .put("word", Main.gameController.getWord(this.gameIdentifier));
+                                .put("word", Main.gameController.getWord(this.gameIdentifier))
+                                .put("wordIsGuessed", Main.gameController.getWordGuessed(gameIdentifier));
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
