@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public class GameImpl {
     private String gameID;
+    private boolean isStarted = false;
     private final ArrayList<PlayerImpl> players;
     private WordImpl word;
-    private boolean isStarted = false;
+    private TurnHandlerImpl turnHandler;
+
     public GameImpl(String firstPlayer){
         players = new ArrayList<>();
         this.gameID = createGameID();
@@ -24,6 +26,7 @@ public class GameImpl {
         player.setGod(true);
         players.set(index, player);
         setStarted(true);
+        turnHandler.setOrder(players.size() - 1, indexOfGod());
     }
 
     public void addPlayer(String username) throws Exception {
@@ -70,8 +73,22 @@ public class GameImpl {
         this.word.setWord(word);
     }
 
+    public String getCurrentTurn() {
+        return players.get(turnHandler.getCurrentTurn()).getUsername();
+    }
+
     private String createGameID(){
         gameID = RandomString.getRandomString(4);
         return gameID;
+    }
+
+    private int indexOfGod() throws Exception {
+        int index = 0;
+        for (PlayerImpl player: players) {
+            if (player.isGod())
+                return index;
+            index++;
+        }
+        throw new Exception("There is no God");
     }
 }

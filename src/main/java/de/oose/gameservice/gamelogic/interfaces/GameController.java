@@ -1,7 +1,6 @@
 package de.oose.gameservice.gamelogic.interfaces;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public interface GameController {
     /**
@@ -103,5 +102,5 @@ public interface GameController {
      * Return the Username of the User whose turn it is to guess a character
      * @return String (Username ex.: Test)
      */
-    public String whoseTurnIsIt();
+    public String whoseTurnIsIt(String gameIdentifier) throws Exception;
 }
