@@ -197,7 +197,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public String whoseTurnIsIt() {
-        return null;
+        return "";
     }
 
     private int getIndexByID(String gameIdentifier) throws Exception {
