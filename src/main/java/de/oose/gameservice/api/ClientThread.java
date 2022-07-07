@@ -80,7 +80,7 @@ public class ClientThread implements Runnable {
                     }
                     case "joinRoom":
                     {
-                        this.username = message.getString("username").toUpperCase();
+                        this.username = message.getString("username").toLowerCase();
                         this.username = this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
                         this.gameIdentifier = message.getString("gameID").toUpperCase();
                         JSONObject response = new JSONObject();
