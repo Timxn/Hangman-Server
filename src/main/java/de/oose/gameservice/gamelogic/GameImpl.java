@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public class GameImpl {
     private String gameID;
+    private boolean isStarted = false;
     private final ArrayList<PlayerImpl> players;
     private WordImpl word;
-    private boolean isStarted = false;
+    private TurnHandlerImpl turnHandler;
+
     public GameImpl(String firstPlayer){
         players = new ArrayList<>();
         this.gameID = createGameID();
@@ -24,6 +26,7 @@ public class GameImpl {
         player.setGod(true);
         players.set(index, player);
         setStarted(true);
+        turnHandler.setOrder(players.size());
     }
 
     public void addPlayer(String username) throws Exception {
@@ -68,6 +71,10 @@ public class GameImpl {
 
     public void setWord(String word) throws Exception {
         this.word.setWord(word);
+    }
+
+    public String getCurrentTurn() {
+        return players.get(turnHandler.getCurrentTurn()).getUsername();
     }
 
     private String createGameID(){
