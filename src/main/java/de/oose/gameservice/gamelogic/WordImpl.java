@@ -5,6 +5,12 @@ public class WordImpl {
     private String hiddenWord = "";
 
     public String getWord() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <hiddenWord.length() ; i++) {
+            sb.append(hiddenWord.charAt(i));
+            if (i != hiddenWord.length() - 1)
+                sb.append("X");
+        }
         return hiddenWord;
     }
 
