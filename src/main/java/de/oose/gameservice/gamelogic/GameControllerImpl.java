@@ -187,7 +187,7 @@ public class GameControllerImpl implements GameController {
      */
     @Override
     public boolean getWorded(String gameIdentifier) throws Exception {
-        return allGames.get(getIndexByID(gameIdentifier)).getWordObject().getWord().equals("");
+        return !allGames.get(getIndexByID(gameIdentifier)).getWordObject().getWord().equals("");
     }
 
     /**
