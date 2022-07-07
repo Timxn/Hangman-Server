@@ -196,8 +196,8 @@ public class GameControllerImpl implements GameController {
      * @return String (Username ex.: Test)
      */
     @Override
-    public String whoseTurnIsIt() {
-        return "";
+    public String whoseTurnIsIt(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).getCurrentTurn();
     }
 
     private int getIndexByID(String gameIdentifier) throws Exception {
