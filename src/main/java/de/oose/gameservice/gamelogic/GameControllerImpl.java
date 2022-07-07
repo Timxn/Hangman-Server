@@ -11,6 +11,7 @@ public class GameControllerImpl implements GameController {
     public GameControllerImpl(){
         allGames = new ArrayList<>();
     }
+
     /**
      * Adds a user to an existing game.
      *
