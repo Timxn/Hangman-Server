@@ -16,6 +16,7 @@ public class GameImpl {
         this.gameID = createGameID();
         players.add(new PlayerImpl(firstPlayer));
         word = new WordImpl();
+        turnHandler = new TurnHandlerImpl();
     }
 
     public void startingGame() throws Exception {
