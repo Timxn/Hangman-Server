@@ -25,6 +25,7 @@ public class GameControllerImpl implements GameController {
         GameImpl game = allGames.get(index);
         if (game.isStarted()) throw new Exception("Game is already in progress and cant be joined!");
         game.addPlayer(username);
+        //allGames.set(index, game);
     }
 
     /**
@@ -38,6 +39,7 @@ public class GameControllerImpl implements GameController {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         game.removePlayer(username);
+        //allGames.set(index, game);
     }
     /**
      * creates a new game and adds the creator to the player list
@@ -45,7 +47,7 @@ public class GameControllerImpl implements GameController {
      * @return 0000-ZZZZ as identifier for the game
      */
     @Override
-    public String createGame(String username) throws Exception {
+    public String createGame(String username) {
         GameImpl game = new GameImpl(username);
         allGames.add(game);
         return game.getGameID();
@@ -63,7 +65,7 @@ public class GameControllerImpl implements GameController {
             GameImpl game = allGames.get(index);
             if (game.isStarted()) throw new Exception("Game cant be started again!");
             game.startingGame();
-            allGames.set(index, game);
+            //allGames.set(index, game);
             return true;
         } catch (Exception e) {
             if (e.getMessage().equals("Game cant be started again!")) throw e;
@@ -97,6 +99,7 @@ public class GameControllerImpl implements GameController {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         game.setWord(word);
+        //allGames.set(index, game);
     }
 
     /**
@@ -106,8 +109,13 @@ public class GameControllerImpl implements GameController {
      * @param letter
      */
     @Override
-    public void guessLetter(String gameIdentifier, char letter) {
-
+    public void guessLetter(String gameIdentifier, char letter, String username) throws Exception {
+        if (!whoseTurnIsIt(gameIdentifier).equals(username)) throw new Exception("Not this players turn");
+        if (!IllegalString.isAlpha(String.valueOf(letter))) throw new Exception("Illegal char");
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+        game.guessLetter(letter);
+        //allGames.set(index, game);
     }
 
     /**
@@ -143,8 +151,8 @@ public class GameControllerImpl implements GameController {
      * @return ArrayList<Character>
      */
     @Override
-    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) {
-        return null;
+    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).getAlreadyGuessedLetters();
     }
 
     /**
@@ -154,8 +162,8 @@ public class GameControllerImpl implements GameController {
      * @return int 0-9
      */
     @Override
-    public int getMistakesMade(String gameIdentifier) {
-        return 0;
+    public int getMistakesMade(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).getMistakesMade();
     }
 
     /**
@@ -165,8 +173,8 @@ public class GameControllerImpl implements GameController {
      * @return
      */
     @Override
-    public boolean getWordGuessed(String gameIdentifier) {
-        return false;
+    public boolean getWordGuessed(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).isWordGuessed();
     }
 
     /**

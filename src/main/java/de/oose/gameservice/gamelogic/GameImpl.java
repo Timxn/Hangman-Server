@@ -7,27 +7,30 @@ import java.util.ArrayList;
 public class GameImpl {
     private String gameID;
     private boolean isStarted = false;
+    private int mistakesMade = 0;
     private final ArrayList<PlayerImpl> players;
-    private WordImpl word;
-    private TurnHandlerImpl turnHandler;
-
+    private final ArrayList<Character> alreadyGuessedLetters;
+    private final WordImpl word;
+    private final TurnHandlerImpl turnHandler;
     public GameImpl(String firstPlayer){
         players = new ArrayList<>();
-        this.gameID = createGameID();
-        players.add(new PlayerImpl(firstPlayer));
+        alreadyGuessedLetters = new ArrayList<>();
         word = new WordImpl();
         turnHandler = new TurnHandlerImpl();
+        players.add(new PlayerImpl(firstPlayer));
+        this.gameID = createGameID();
     }
 
     public void startingGame() throws Exception {
         if (players.size()<2) throw new Exception("To less players");
         isStarted = true;
+        mistakesMade = 0;
+        alreadyGuessedLetters.clear();
         int index = (int)(players.size() * Math.random());
         PlayerImpl player = players.get(index);
         player.setGod(true);
         players.set(index, player);
-        setStarted(true);
-        turnHandler.setOrder(players.size() - 1, indexOfGod());
+        turnHandler.setOrder(players.size() - 1, index);
     }
 
     public void addPlayer(String username) throws Exception {
@@ -36,11 +39,11 @@ public class GameImpl {
         }
         players.add(new PlayerImpl(username));
     }
+
     public void removePlayer(String username) throws Exception {
         if (!players.contains(new PlayerImpl(username))) throw new Exception("User not in game");
         players.remove(new PlayerImpl(username));
     }
-
     public PlayerImpl getPlayerByUsername(String username) throws Exception {
         for (PlayerImpl player: players) {
             if(player.getUsername().equals(username)){
@@ -48,6 +51,22 @@ public class GameImpl {
             }
         }
         throw new Exception("There is no player with this username");
+    }
+
+    public void setWord(String word) throws Exception {
+        this.word.setWord(word);
+    }
+
+    public void guessLetter(char letter) {
+        alreadyGuessedLetters.add(letter);
+        if (!word.guessLetter(letter)) {
+            mistakesMade++;
+            turnHandler.nextTurn();
+        }
+    }
+
+    public boolean isWordGuessed() {
+        return word.isWordGuessed();
     }
 
     public String getGameID() {
@@ -70,12 +89,16 @@ public class GameImpl {
         return word;
     }
 
-    public void setWord(String word) throws Exception {
-        this.word.setWord(word);
+    public ArrayList<Character> getAlreadyGuessedLetters() {
+        return alreadyGuessedLetters;
     }
 
     public String getCurrentTurn() {
         return players.get(turnHandler.getCurrentTurn()).getUsername();
+    }
+
+    public int getMistakesMade() {
+        return mistakesMade;
     }
 
     private String createGameID(){
@@ -83,7 +106,7 @@ public class GameImpl {
         return gameID;
     }
 
-    private int indexOfGod() throws Exception {
+    /*private int indexOfGod() throws Exception {
         int index = 0;
         for (PlayerImpl player: players) {
             if (player.isGod())
@@ -91,5 +114,5 @@ public class GameImpl {
             index++;
         }
         throw new Exception("There is no God");
-    }
+    }*/
 }
