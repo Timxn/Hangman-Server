@@ -187,7 +187,7 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        response.put("status", "successful");
+                        response.put("status", "word set successfully");
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
@@ -231,7 +231,7 @@ public class ClientThread implements Runnable {
                     }
 
                     case "guess":
-                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0));
+                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0), username);
                         objectOutputStream.writeUTF(new JSONObject("status", "successful").toString());
                         break;
 
