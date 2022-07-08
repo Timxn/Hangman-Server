@@ -58,7 +58,7 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        if (!IllegalString.isAlpha(username)) {
+                        if (IllegalString.isNotAlpha(username)) {
                             response.put("status", "Invalid username!");
                             log.severe("Invalid username!");
                             objectOutputStream.writeUTF(response.toString());
@@ -90,7 +90,7 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        if (!IllegalString.isAlpha(username)) {
+                        if (IllegalString.isNotAlpha(username)) {
                             response.put("status", "Invalid username!");
                             log.severe("Invalid username!");
                             objectOutputStream.writeUTF(response.toString());
