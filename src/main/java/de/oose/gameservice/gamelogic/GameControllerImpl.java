@@ -48,11 +48,6 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public boolean isGod(String gameIdentifier, String username) throws Exception {
-        return allGames.get(getIndexByID(gameIdentifier)).getPlayerByUsername(username).isGod();
-    }
-
-    @Override
     public void setWord(String gameIdentifier, String word, String username) throws Exception {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
@@ -64,6 +59,11 @@ public class GameControllerImpl implements GameController {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         game.guessLetter(letter, username);
+    }
+
+    @Override
+    public boolean isGod(String gameIdentifier, String username) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).getPlayerByUsername(username).isGod();
     }
 
     @Override
