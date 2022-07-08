@@ -67,6 +67,8 @@ public class GameImpl {
         if (!word.guessLetter(letter)) {
             mistakesMade++;
             turnHandler.nextTurn();
+            if (mistakesMade == 9) //if mistake count is 9 the game stops
+                isStarted = false;
         }
     }
 
