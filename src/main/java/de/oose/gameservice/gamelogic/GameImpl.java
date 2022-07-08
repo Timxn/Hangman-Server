@@ -81,10 +81,6 @@ public class GameImpl {
         return isStarted;
     }
 
-    public void setStarted(boolean started) {
-        isStarted = started;
-    }
-
     public WordImpl getWordObject() {
         return word;
     }
@@ -105,14 +101,4 @@ public class GameImpl {
         gameID = RandomString.getRandomString(4);
         return gameID;
     }
-
-    /*private int indexOfGod() throws Exception {
-        int index = 0;
-        for (PlayerImpl player: players) {
-            if (player.isGod())
-                return index;
-            index++;
-        }
-        throw new Exception("There is no God");
-    }*/
 }
