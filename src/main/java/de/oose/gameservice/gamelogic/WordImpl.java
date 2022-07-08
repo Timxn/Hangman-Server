@@ -4,10 +4,6 @@ public class WordImpl {
     private String word = null;
     private String hiddenWord = "";
 
-    public boolean isWordGuessed() {
-        return word.equals(hiddenWord);
-    }
-
     public String getWord() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i <hiddenWord.length() ; i++) {
@@ -37,5 +33,14 @@ public class WordImpl {
             }
         }
         return correct;
+    }
+
+    public boolean isWordGuessed() {
+        return word.equals(hiddenWord);
+    }
+
+    public void resetWord() {
+        word = null;
+        hiddenWord = "";
     }
 }
