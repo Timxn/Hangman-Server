@@ -1,5 +1,6 @@
 package de.oose.gameservice.gamelogic;
 
+import de.oose.gameservice.gamelogic.utils.IllegalString;
 import de.oose.gameservice.gamelogic.utils.RandomString;
 
 import java.util.ArrayList;
@@ -23,17 +24,16 @@ public class GameImpl {
 
     public void startingGame() throws Exception {
         if (players.size()<2) throw new Exception("To less players");
+        if (isStarted) throw new Exception("Game cant be started again!");
+        word.resetWord();
         isStarted = true;
         mistakesMade = 0;
         alreadyGuessedLetters.clear();
-        int index = (int)(players.size() * Math.random());
-        PlayerImpl player = players.get(index);
-        player.setGod(true);
-        players.set(index, player);
-        turnHandler.setOrder(players.size() - 1, index);
+        turnHandler.setOrder(players.size() - 1, godMaker());
     }
 
     public void addPlayer(String username) throws Exception {
+        if (isStarted) throw new Exception("Game is already in progress and cant be joined!");
         for (PlayerImpl player : players) {
             if (player.getUsername().equals(username)) throw new Exception("User already in game");
         }
@@ -53,11 +53,16 @@ public class GameImpl {
         throw new Exception("There is no player with this username");
     }
 
-    public void setWord(String word) throws Exception {
+    public void setWord(String word, String username) throws Exception {
+        if (!getPlayerByUsername(username).isGod()) throw new Exception("This player is not allowed to do that!");
+        if (IllegalString.isNotAlpha(word)) throw new Exception("Illegal word");
+        if (word.length() < 2) throw new Exception("Word to short");
         this.word.setWord(word);
     }
 
-    public void guessLetter(char letter) {
+    public void guessLetter(char letter, String username) throws Exception {
+        if (!getCurrentTurn().equals(username)) throw new Exception("Not this players turn");
+        if (IllegalString.isNotAlpha(String.valueOf(letter))) throw new Exception("Illegal char");
         alreadyGuessedLetters.add(letter);
         if (!word.guessLetter(letter)) {
             mistakesMade++;
@@ -66,6 +71,8 @@ public class GameImpl {
     }
 
     public boolean isWordGuessed() {
+        if (word.isWordGuessed())
+            isStarted = false;
         return word.isWordGuessed();
     }
 
@@ -73,8 +80,12 @@ public class GameImpl {
         return gameID;
     }
 
-    public ArrayList<PlayerImpl> getPlayers() {
-        return players;
+    public ArrayList<String> getPlayers() {
+        ArrayList<String> usernames = new ArrayList<>();
+        for (PlayerImpl player: players) {
+            usernames.add(player.getUsername());
+        }
+        return usernames;
     }
 
     public boolean isStarted() {
@@ -100,5 +111,20 @@ public class GameImpl {
     private String createGameID(){
         gameID = RandomString.getRandomString(4);
         return gameID;
+    }
+
+    private int godMaker() {
+        int index = 0;
+        for (PlayerImpl player: players) {
+            if (player.isGod()) {
+                player.setGod(false);
+                players.set(index, player); //could be removed?
+            }
+        }
+        index = (int)(players.size() * Math.random());
+        PlayerImpl player = players.get(index);
+        player.setGod(true);
+        players.set(index, player); //could be removed?
+        return index;
     }
 }
