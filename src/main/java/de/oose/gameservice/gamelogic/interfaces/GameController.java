@@ -1,7 +1,6 @@
 package de.oose.gameservice.gamelogic.interfaces;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public interface GameController {
     /**
@@ -23,7 +22,7 @@ public interface GameController {
      * @param username
      * @return 1000-9999 as identifier for the game
      */
-    public String createGame(String username) throws Exception;
+    public String createGame(String username);
 
     /**
      * starts a new game.
@@ -50,7 +49,7 @@ public interface GameController {
      * make a guess
      * @param letter
      */
-    public void guessLetter(String gameIdentifier, char letter);
+    public void guessLetter(String gameIdentifier, char letter, String username) throws Exception;
 
     /**
      * Get the players of the game in which the player is
@@ -68,7 +67,7 @@ public interface GameController {
      * Get all characters that have been tried in an ArrayList<Character>
      * @return ArrayList<Character>
      */
-    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier);
+    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception;
 
 
     /**
@@ -77,13 +76,13 @@ public interface GameController {
      * @param gameIdentifier
      * @return int 0-9
      */
-    int getMistakesMade(String gameIdentifier);
+    int getMistakesMade(String gameIdentifier) throws Exception;
 
     /**
      * gets if the word has been guessed.
      * @return
      */
-    public boolean getWordGuessed(String gameIdentifier);
+    public boolean getWordGuessed(String gameIdentifier) throws Exception;
 
     /**
      * get if game is started
@@ -103,5 +102,5 @@ public interface GameController {
      * Return the Username of the User whose turn it is to guess a character
      * @return String (Username ex.: Test)
      */
-    public String whoseTurnIsIt();
+    public String whoseTurnIsIt(String gameIdentifier) throws Exception;
 }

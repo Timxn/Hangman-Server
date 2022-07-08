@@ -49,7 +49,8 @@ public class ClientThread implements Runnable {
                     // login page
                     case "createRoom":
                     {
-                        this.username = message.getString("username").toUpperCase();
+                        this.username = message.getString("username").toLowerCase();
+                        this.username = this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
                         JSONObject response = new JSONObject();
                         if (username.isBlank()) {
                             response.put("status", "Username is empty");
@@ -57,7 +58,7 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        if (!IllegalString.isAlpha(username)) {
+                        if (IllegalString.isNotAlpha(username)) {
                             response.put("status", "Invalid username!");
                             log.severe("Invalid username!");
                             objectOutputStream.writeUTF(response.toString());
@@ -79,7 +80,8 @@ public class ClientThread implements Runnable {
                     }
                     case "joinRoom":
                     {
-                        this.username = message.getString("username").toUpperCase();
+                        this.username = message.getString("username").toLowerCase();
+                        this.username = this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
                         this.gameIdentifier = message.getString("gameID").toUpperCase();
                         JSONObject response = new JSONObject();
                         if (username.isBlank()) {
@@ -88,7 +90,7 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        if (!IllegalString.isAlpha(username)) {
+                        if (IllegalString.isNotAlpha(username)) {
                             response.put("status", "Invalid username!");
                             log.severe("Invalid username!");
                             objectOutputStream.writeUTF(response.toString());
@@ -161,7 +163,7 @@ public class ClientThread implements Runnable {
                         try {
                             tmp = Main.gameController.isGod(gameIdentifier, username);
                             if (tmp) log.info(username + " is god");
-                            log.info(username + " is not god");
+                            else log.info(username + " is not god");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -185,7 +187,7 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        response.put("status", "successful");
+                        response.put("status", "word set successfully");
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
@@ -196,7 +198,7 @@ public class ClientThread implements Runnable {
                         try {
                             isStarted = Main.gameController.getStarted(gameIdentifier);
                             if (isStarted) log.info(gameIdentifier + " is started");
-                            log.info(gameIdentifier + " is not started");
+                             else log.info(gameIdentifier + " is not started");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -214,8 +216,8 @@ public class ClientThread implements Runnable {
                         boolean hasWord;
                         try {
                             hasWord = Main.gameController.getWorded(gameIdentifier);
-                            if (hasWord) log.info(gameIdentifier + " has Word");
-                            log.info(gameIdentifier + " does not have a word");
+                            if (hasWord) log.info(gameIdentifier + ": " + username + " has Word");
+                            else log.info(gameIdentifier + " does not have a word");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -229,7 +231,7 @@ public class ClientThread implements Runnable {
                     }
 
                     case "guess":
-                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0));
+                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0), username);
                         objectOutputStream.writeUTF(new JSONObject("status", "successful").toString());
                         break;
 
@@ -242,10 +244,15 @@ public class ClientThread implements Runnable {
 
                     case "updateGame": {
                         JSONObject response = new JSONObject();
-                        response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt())
-                                .put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
+                        response.put("mistakesMade", Main.gameController.getMistakesMade(gameIdentifier))
                                 .put("characterList", Main.gameController.getCharactersThatAlreadyHaveBeenTried(this.gameIdentifier))
-                                .put("word", Main.gameController.getWord(this.gameIdentifier));
+                                .put("word", Main.gameController.getWord(this.gameIdentifier))
+                                .put("wordIsGuessed", Main.gameController.getWordGuessed(gameIdentifier));
+                        try {
+                            response.put("whoseTurnIsIt", Main.gameController.whoseTurnIsIt(gameIdentifier));
+                        } catch (Exception e) {
+                            response.put("whoseTurnIsIt" , "ERROR");
+                        }
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }

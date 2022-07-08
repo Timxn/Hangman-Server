@@ -5,7 +5,13 @@ public class WordImpl {
     private String hiddenWord = "";
 
     public String getWord() {
-        return hiddenWord;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <hiddenWord.length() ; i++) {
+            sb.append(hiddenWord.charAt(i));
+            if (i != hiddenWord.length() - 1)
+                sb.append(" ");
+        }
+        return sb.toString();
     }
 
     public void setWord(String word) throws Exception {
@@ -16,5 +22,25 @@ public class WordImpl {
             sb.append("_");
         }
         hiddenWord = sb.toString();
+    }
+
+    public boolean guessLetter(char letter) {
+        boolean correct = false;
+        for (int i = 0; i <word.length() ; i++) {
+            if (word.charAt(i) == letter && hiddenWord.charAt(i) == '_') {
+                hiddenWord = hiddenWord.substring(0, i) + letter + hiddenWord.substring(i + 1);
+                correct = true;
+            }
+        }
+        return correct;
+    }
+
+    public boolean isWordGuessed() {
+        return word.equals(hiddenWord);
+    }
+
+    public void resetWord() {
+        word = null;
+        hiddenWord = "";
     }
 }
