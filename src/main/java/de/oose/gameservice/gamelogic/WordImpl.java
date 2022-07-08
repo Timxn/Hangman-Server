@@ -4,6 +4,10 @@ public class WordImpl {
     private String word = null;
     private String hiddenWord = "";
 
+    public boolean isWordGuessed() {
+        return word.equals(hiddenWord);
+    }
+
     public String getWord() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i <hiddenWord.length() ; i++) {
@@ -22,5 +26,16 @@ public class WordImpl {
             sb.append("_");
         }
         hiddenWord = sb.toString();
+    }
+
+    public boolean guessLetter(char letter) {
+        boolean correct = false;
+        for (int i = 0; i <word.length() ; i++) {
+            if (word.charAt(i) == letter && hiddenWord.charAt(i) == '_') {
+                hiddenWord = hiddenWord.substring(0, i) + letter + hiddenWord.substring(i + 1);
+                correct = true;
+            }
+        }
+        return correct;
     }
 }
