@@ -87,11 +87,7 @@ public class GameImpl {
     }
 
     public String getGuessedWrongLetters() {
-        StringBuilder sb = new StringBuilder();
-        for (Character character: guessedWrongLetters) {
-            sb.append(character);
-        }
-        return sb.toString();
+        return guessedWrongLetters.toString();
     }
 
     public String getGameID() {
