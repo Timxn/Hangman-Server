@@ -284,12 +284,21 @@ public class ClientThread implements Runnable {
 
 
                     case "quitGame": {
-                        Main.gameController.leaveGame(this.gameIdentifier, this.username);
                         JSONObject response = new JSONObject();
-                        response.put("status", "successful");
+                        try {
+                            Main.gameController.leaveGame(this.gameIdentifier, this.username);
+                            log.info(username + " left the lobby " + gameIdentifier);
+                            response.put("status", "successful");
+                            username = null;
+                            gameIdentifier = null;
+                        } catch (Exception e) {
+                            response.put("status", e.getMessage());
+                            log.severe(e.getMessage());
+                        }
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
+
                     case "restartGame": {
                         JSONObject response = new JSONObject();
                         try {
