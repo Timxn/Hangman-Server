@@ -43,7 +43,7 @@ public class GameImpl {
 
     public void removePlayer(String username) throws Exception {
         if (!players.contains(new PlayerImpl(username))) throw new Exception("User not in game");
-        players.remove(new PlayerImpl(username));
+        players.remove(getIndexOfPlayer(username));
         if (username.equals(winner))
             winner = null;
     }
@@ -150,7 +150,18 @@ public class GameImpl {
         return index;
     }
 
-    private int getIndexOfGod () throws Exception {
+    private int getIndexOfPlayer(String username) throws Exception {
+        int index = 0;
+        for (PlayerImpl player: players) {
+            if (player.getUsername().equals(username)) {
+                return index;
+            }
+            index++;
+        }
+        throw new Exception("There is no player with this username");
+    }
+
+    private int getIndexOfGod() throws Exception {
         int index = 0;
         for (PlayerImpl player: players) {
             if (player.isGod()) {
