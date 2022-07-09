@@ -14,6 +14,7 @@ public class GameImpl {
     private final ArrayList<Character> guessedWrongLetters;
     private final WordImpl word;
     private final TurnHandlerImpl turnHandler;
+    
     public GameImpl(String firstPlayer){
         players = new ArrayList<>();
         guessedWrongLetters = new ArrayList<>();
