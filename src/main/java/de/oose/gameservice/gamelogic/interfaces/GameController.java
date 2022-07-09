@@ -64,7 +64,7 @@ public interface GameController {
     public String getWord(String gameIdentifier) throws Exception;
 
     /**
-     * Get all characters that have been tried in an ArrayList<Character>
+     * Get all characters that have been tried in an ArrayList<Character> and are not correct
      * @return ArrayList<Character>
      */
     public String getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception;
