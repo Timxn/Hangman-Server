@@ -10,12 +10,12 @@ public class GameImpl {
     private boolean isStarted = false;
     private int mistakesMade = 0;
     private final ArrayList<PlayerImpl> players;
-    private final ArrayList<Character> alreadyGuessedLetters;
+    private final ArrayList<Character> guessedWrongLetters;
     private final WordImpl word;
     private final TurnHandlerImpl turnHandler;
     public GameImpl(String firstPlayer){
         players = new ArrayList<>();
-        alreadyGuessedLetters = new ArrayList<>();
+        guessedWrongLetters = new ArrayList<>();
         word = new WordImpl();
         turnHandler = new TurnHandlerImpl();
         players.add(new PlayerImpl(firstPlayer));
@@ -28,7 +28,7 @@ public class GameImpl {
         word.resetWord();
         isStarted = true;
         mistakesMade = 0;
-        alreadyGuessedLetters.clear();
+        guessedWrongLetters.clear();
         turnHandler.setOrder(players.size() - 1, godMaker());
     }
 
@@ -63,8 +63,8 @@ public class GameImpl {
     public void guessLetter(char letter, String username) throws Exception {
         if (!getCurrentTurn().equals(username)) throw new Exception("Not this players turn");
         if (IllegalString.isNotAlpha(String.valueOf(letter))) throw new Exception("Illegal char");
-        alreadyGuessedLetters.add(letter);
         if (!word.guessLetter(letter)) {
+            guessedWrongLetters.add(letter);
             mistakesMade++;
             turnHandler.nextTurn();
             if (mistakesMade == 9) //if mistake count is 9 the game stops
@@ -78,10 +78,6 @@ public class GameImpl {
         return word.isWordGuessed();
     }
 
-    public String getGameID() {
-        return gameID;
-    }
-
     public ArrayList<String> getPlayers() {
         ArrayList<String> usernames = new ArrayList<>();
         for (PlayerImpl player: players) {
@@ -90,16 +86,24 @@ public class GameImpl {
         return usernames;
     }
 
+    public String getGuessedWrongLetters() {
+        StringBuilder sb = new StringBuilder();
+        for (Character character: guessedWrongLetters) {
+            sb.append(character);
+        }
+        return sb.toString();
+    }
+
+    public String getGameID() {
+        return gameID;
+    }
+
     public boolean isStarted() {
         return isStarted;
     }
 
     public WordImpl getWordObject() {
         return word;
-    }
-
-    public ArrayList<Character> getAlreadyGuessedLetters() {
-        return alreadyGuessedLetters;
     }
 
     public String getCurrentTurn() {

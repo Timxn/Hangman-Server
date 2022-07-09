@@ -67,7 +67,7 @@ public interface GameController {
      * Get all characters that have been tried in an ArrayList<Character>
      * @return ArrayList<Character>
      */
-    public ArrayList<Character> getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception;
+    public String getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception;
 
 
     /**
