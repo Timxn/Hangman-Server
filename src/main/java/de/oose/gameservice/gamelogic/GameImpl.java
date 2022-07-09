@@ -127,25 +127,23 @@ public class GameImpl {
     }
 
     private int godMaker() throws Exception {
-        if (winner != null) {
-            int index = getIndexOfGod();
-            PlayerImpl player = players.get(index);
+        int index = 0;
+        for (PlayerImpl player: players) {
             player.setGod(false);
             players.set(index, player); //could be removed?
-            index = 0;
-            for (PlayerImpl player2: players) {
-                if (player2.getUsername().equals(winner)) {
-                    player2.setGod(true);
-                    players.set(index, player2); //could be removed?
-                    return index;
-                }
-                index++;
-            }
+            index++;
         }
-        int index = (int)(players.size() * Math.random());
-        PlayerImpl player = players.get(index);
-        player.setGod(true);
-        players.set(index, player); //could be removed?
+        if (winner != null) {
+            index = getIndexOfPlayer(winner);
+            PlayerImpl player = players.get(index);
+            player.setGod(true);
+            players.set(index, player); //could be removed?
+        } else {
+            index = (int) (players.size() * Math.random());
+            PlayerImpl player = players.get(index);
+            player.setGod(true);
+            players.set(index, player); //could be removed?
+        }
         return index;
     }
 
