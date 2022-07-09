@@ -78,7 +78,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public String getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception {
-        return allGames.get(getIndexByID(gameIdentifier)).getAlreadyGuessedLetters().toString();
+        return allGames.get(getIndexByID(gameIdentifier)).getGuessedWrongLetters();
     }
 
     @Override
