@@ -230,10 +230,21 @@ public class ClientThread implements Runnable {
                         break;
                     }
 
-                    case "guess":
-                        Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0), username);
-                        objectOutputStream.writeUTF(new JSONObject("status", "successful").toString());
+                    case "guess": {
+                        JSONObject response = new JSONObject();
+                        try {
+                            Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0), username);
+                            log.info(message.getString("character") + " gets guessed");
+                        } catch (Exception e) {
+                            response.put("status", e.getMessage());
+                            log.severe(e.getMessage());
+                            objectOutputStream.writeUTF(response.toString());
+                            break;
+                        }
+                        response.put("status", "successful");
+                        objectOutputStream.writeUTF(response.toString());
                         break;
+                    }
 
                     case "getMistakes": {
                         JSONObject response = new JSONObject()
