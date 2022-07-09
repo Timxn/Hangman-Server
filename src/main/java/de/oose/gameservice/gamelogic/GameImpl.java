@@ -94,7 +94,8 @@ public class GameImpl {
     }
 
     public String getGuessedWrongLetters() {
-        return guessedWrongLetters.toString();
+        String returny = guessedWrongLetters.toString();
+        return returny.substring(1, returny.length() - 1);
     }
 
     public String getWinner() {

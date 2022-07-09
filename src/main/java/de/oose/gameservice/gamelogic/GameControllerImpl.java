@@ -24,6 +24,8 @@ public class GameControllerImpl implements GameController {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         game.removePlayer(username);
+        if (game.getPlayers().isEmpty())
+            allGames.remove(index);
     }
 
     @Override
@@ -34,17 +36,10 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public boolean startGame(String gameIdentifier) throws Exception {
-        //TODO make this cleaner
-        try {
-            int index = getIndexByID(gameIdentifier);
-            GameImpl game = allGames.get(index);
-            game.startingGame();
-            return true;
-        } catch (Exception e) {
-            if (e.getMessage().equals("Game cant be started again!")) throw e;
-            return false;
-        }
+    public void startGame(String gameIdentifier) throws Exception {
+        int index = getIndexByID(gameIdentifier);
+        GameImpl game = allGames.get(index);
+        game.startingGame();
     }
 
     @Override
