@@ -42,7 +42,7 @@ public class GameImpl {
     }
 
     public void removePlayer(String username) throws Exception {
-        if (!players.contains(new PlayerImpl(username))) throw new Exception("User not in game");
+        if (!players.contains(getPlayerByUsername(username))) throw new Exception("User not in game");
         players.remove(getIndexOfPlayer(username));
         if (username.equals(winner))
             winner = null;
