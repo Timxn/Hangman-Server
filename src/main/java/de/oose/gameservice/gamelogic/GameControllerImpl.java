@@ -106,6 +106,10 @@ public class GameControllerImpl implements GameController {
         return allGames.get(getIndexByID(gameIdentifier)).getCurrentTurn();
     }
 
+    public String getWinnerOfGame(String gameIdentifier) throws Exception {
+        return allGames.get(getIndexByID(gameIdentifier)).getWinner();
+    }
+
     private int getIndexByID(String gameIdentifier) throws Exception {
         int index = 0;
         for (GameImpl game: allGames) {

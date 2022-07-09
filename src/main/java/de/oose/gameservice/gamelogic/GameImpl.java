@@ -97,6 +97,10 @@ public class GameImpl {
         return guessedWrongLetters.toString();
     }
 
+    public String getWinner() {
+        return winner;
+    }
+
     public String getGameID() {
         return gameID;
     }
