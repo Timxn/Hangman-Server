@@ -300,7 +300,10 @@ public class ClientThread implements Runnable {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
                             objectOutputStream.writeUTF(response.toString());
-                            break;
+                              this.objectInputStream.close();
+                            this.objectOutputStream.close();
+                            socket.close();
+                            break label;
                         }
                         response.put("status", "successful");
                         objectOutputStream.writeUTF(response.toString());
