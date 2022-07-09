@@ -263,6 +263,21 @@ public class ClientThread implements Runnable {
                         break;
                     }
                     // win page
+
+                    case "getWinner": {
+                        JSONObject response = new JSONObject();
+                        try {
+                            String winner = Main.gameController.getWinnerOfGame(gameIdentifier);
+                            response.put("status", "successful")
+                                    .put("winner", winner);
+                        } catch (Exception e) {
+                            response.put("status", e.getMessage());
+                        }
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
+
+
                     case "quitGame": {
                         Main.gameController.leaveGame(this.gameIdentifier, this.username);
                         JSONObject response = new JSONObject();
