@@ -24,6 +24,8 @@ public class GameControllerImpl implements GameController {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         game.removePlayer(username);
+        if (game.getPlayers().isEmpty())
+            allGames.remove(index);
     }
 
     @Override
