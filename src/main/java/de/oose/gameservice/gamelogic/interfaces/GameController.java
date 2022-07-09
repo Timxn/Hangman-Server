@@ -103,4 +103,6 @@ public interface GameController {
      * @return String (Username ex.: Test)
      */
     public String whoseTurnIsIt(String gameIdentifier) throws Exception;
+
+    public String getWinnerOfGame(String gameIdentifier) throws Exception;
 }

@@ -9,6 +9,7 @@ public class GameImpl {
     private String gameID;
     private boolean isStarted = false;
     private int mistakesMade = 0;
+    private String winner = null;
     private final ArrayList<PlayerImpl> players;
     private final ArrayList<Character> guessedWrongLetters;
     private final WordImpl word;
@@ -43,7 +44,10 @@ public class GameImpl {
     public void removePlayer(String username) throws Exception {
         if (!players.contains(new PlayerImpl(username))) throw new Exception("User not in game");
         players.remove(new PlayerImpl(username));
+        if (username.equals(winner))
+            winner = null;
     }
+
     public PlayerImpl getPlayerByUsername(String username) throws Exception {
         for (PlayerImpl player: players) {
             if(player.getUsername().equals(username)){
@@ -67,14 +71,17 @@ public class GameImpl {
             guessedWrongLetters.add(letter);
             mistakesMade++;
             turnHandler.nextTurn();
-            if (mistakesMade == 9) //if mistake count is 9 the game stops
+            if (mistakesMade == 9) { //if mistake count is 9 the game stops
+                winner = players.get(getIndexOfGod()).getUsername();
                 isStarted = false;
+            }
+        } else if (word.isWordGuessed()){
+            winner = username;
+            isStarted = false;
         }
     }
 
     public boolean isWordGuessed() {
-        if (word.isWordGuessed())
-            isStarted = false;
         return word.isWordGuessed();
     }
 
@@ -88,6 +95,10 @@ public class GameImpl {
 
     public String getGuessedWrongLetters() {
         return guessedWrongLetters.toString();
+    }
+
+    public String getWinner() {
+        return winner;
     }
 
     public String getGameID() {
@@ -115,18 +126,37 @@ public class GameImpl {
         return gameID;
     }
 
-    private int godMaker() {
-        int index = 0;
-        for (PlayerImpl player: players) {
-            if (player.isGod()) {
-                player.setGod(false);
-                players.set(index, player); //could be removed?
+    private int godMaker() throws Exception {
+        if (winner != null) {
+            int index = getIndexOfGod();
+            PlayerImpl player = players.get(index);
+            player.setGod(false);
+            players.set(index, player); //could be removed?
+            index = 0;
+            for (PlayerImpl player2: players) {
+                if (player2.getUsername().equals(winner)) {
+                    player2.setGod(true);
+                    players.set(index, player2); //could be removed?
+                    return index;
+                }
+                index++;
             }
         }
-        index = (int)(players.size() * Math.random());
+        int index = (int)(players.size() * Math.random());
         PlayerImpl player = players.get(index);
         player.setGod(true);
         players.set(index, player); //could be removed?
         return index;
+    }
+
+    private int getIndexOfGod () throws Exception {
+        int index = 0;
+        for (PlayerImpl player: players) {
+            if (player.isGod()) {
+                return index;
+            }
+            index++;
+        }
+        throw new Exception("There is no god");
     }
 }
