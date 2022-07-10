@@ -53,7 +53,7 @@ public class ClientThread implements Runnable {
                         this.username = this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
                         JSONObject response = new JSONObject();
                         if (username.isBlank()) {
-                            response.put("status", "Username is empty");
+                            response.put("status", "Username is empty!");
                             log.severe("Username is empty");
                             objectOutputStream.writeUTF(response.toString());
                             break;
@@ -85,7 +85,7 @@ public class ClientThread implements Runnable {
                         this.gameIdentifier = message.getString("gameID").toUpperCase();
                         JSONObject response = new JSONObject();
                         if (username.isBlank()) {
-                            response.put("status", "Username is empty");
+                            response.put("status", "Username is empty!");
                             log.severe("Username is empty");
                             objectOutputStream.writeUTF(response.toString());
                             break;
@@ -97,7 +97,7 @@ public class ClientThread implements Runnable {
                             break;
                         }
                         if (!IllegalString.isAlphaNumeric(gameIdentifier)) {
-                            response.put("status", "Illegal game identifier");
+                            response.put("status", "Illegal game identifier!");
                             log.severe("Illegal game identifier");
                             objectOutputStream.writeUTF(response.toString());
                             break;

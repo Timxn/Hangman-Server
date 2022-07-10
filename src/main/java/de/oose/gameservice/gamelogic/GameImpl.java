@@ -169,6 +169,6 @@ public class GameImpl {
             }
             index++;
         }
-        throw new Exception("There is no god(thanks Stephen");
+        throw new Exception("There is no god(thanks Stephen)");
     }
 }

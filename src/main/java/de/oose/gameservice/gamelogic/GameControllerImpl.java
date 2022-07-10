@@ -13,7 +13,7 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void joinGame(String gameIdentifier, String username) throws Exception {
-        if (gameIdentifier.isBlank()) throw new Exception("Please enter a game ID");
+        if (gameIdentifier.isBlank()) throw new Exception("Please enter a game ID!");
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         game.addPlayer(username);
@@ -113,6 +113,6 @@ public class GameControllerImpl implements GameController {
             }
             index++;
         }
-        throw new Exception("There is no game with this ID");
+        throw new Exception("There is no game using this ID!");
     }
 }
