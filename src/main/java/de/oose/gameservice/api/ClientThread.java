@@ -192,8 +192,6 @@ public class ClientThread implements Runnable {
                         boolean isStarted;
                         try {
                             isStarted = Main.gameController.getStarted(gameIdentifier);
-                            if (isStarted) log.info(gameIdentifier + " is started");
-                             else log.info(gameIdentifier + " is not started");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -212,7 +210,6 @@ public class ClientThread implements Runnable {
                         try {
                             hasWord = Main.gameController.getWorded(gameIdentifier);
                             if (hasWord) log.info(gameIdentifier + ": " + username + " has Word");
-                            else log.info(gameIdentifier + " does not have a word");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
