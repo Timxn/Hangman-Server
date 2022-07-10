@@ -44,6 +44,7 @@ public class GameImpl {
 
     public void removePlayer(String username) throws Exception {
         players.remove(getIndexOfPlayer(username));
+        isStarted = false;
         if (username.equals(winner))
             winner = null;
     }
