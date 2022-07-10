@@ -74,7 +74,7 @@ public class ClientThread implements Runnable {
                         }
                         response.put("status", "successful")
                                 .put("gameID", gameIdentifier);
-                        log.info("Created Room " + gameIdentifier);
+                        log.info(username + " created room " + gameIdentifier);
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
@@ -111,7 +111,7 @@ public class ClientThread implements Runnable {
                             break;
                         }
                         response.put("status", "successful");
-                        log.info("Joined Room " + gameIdentifier);
+                        log.info(username + " joined Room " + gameIdentifier);
                         objectOutputStream.writeUTF(response.toString());
                         break;
                     }
@@ -126,7 +126,7 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
-                        log.info(gameIdentifier + " got started");
+                        log.info(gameIdentifier + " got started by " + username);
                         response.put("status", "successful");
                         objectOutputStream.writeUTF(response.toString());
                         break;
@@ -157,8 +157,8 @@ public class ClientThread implements Runnable {
                         boolean tmp;
                         try {
                             tmp = Main.gameController.isGod(gameIdentifier, username);
-                            if (tmp) log.info(username + " is god");
-                            else log.info(username + " is not god");
+                            if (tmp) log.info(username + " is god in" + gameIdentifier);
+                            else log.info(username + " is not god in" + gameIdentifier);
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -175,7 +175,7 @@ public class ClientThread implements Runnable {
                         JSONObject response = new JSONObject();
                         try {
                             Main.gameController.setWord(gameIdentifier, message.getString("word").toUpperCase(), username);
-                            log.info(message.getString("word") + " is new word");
+                            log.info(message.getString("word") + " is new word in" + gameIdentifier);
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -192,8 +192,6 @@ public class ClientThread implements Runnable {
                         boolean isStarted;
                         try {
                             isStarted = Main.gameController.getStarted(gameIdentifier);
-                            if (isStarted) log.info(gameIdentifier + " is started");
-                             else log.info(gameIdentifier + " is not started");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -212,7 +210,6 @@ public class ClientThread implements Runnable {
                         try {
                             hasWord = Main.gameController.getWorded(gameIdentifier);
                             if (hasWord) log.info(gameIdentifier + ": " + username + " has Word");
-                            else log.info(gameIdentifier + " does not have a word");
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -229,7 +226,7 @@ public class ClientThread implements Runnable {
                         JSONObject response = new JSONObject();
                         try {
                             Main.gameController.guessLetter(gameIdentifier, message.getString("character").toUpperCase().charAt(0), username);
-                            log.info(message.getString("character") + " gets guessed");
+                            log.info(message.getString("character") + " gets guessed by " + username + " in " + gameIdentifier);
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -268,6 +265,7 @@ public class ClientThread implements Runnable {
                         JSONObject response = new JSONObject();
                         try {
                             String winner = Main.gameController.getWinnerOfGame(gameIdentifier);
+                            log.info(winner + " is winner of " + gameIdentifier);
                             response.put("status", "successful")
                                     .put("winner", winner);
                         } catch (Exception e) {
@@ -298,7 +296,7 @@ public class ClientThread implements Runnable {
                         JSONObject response = new JSONObject();
                         try {
                             Main.gameController.startGame(gameIdentifier);
-                            log.info(gameIdentifier + " got restarted");
+                            log.info(gameIdentifier + " got restarted by " + username);
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
@@ -314,7 +312,7 @@ public class ClientThread implements Runnable {
                         JSONObject response = new JSONObject();
                         try {
                             Main.gameController.leaveGame(this.gameIdentifier, this.username);
-                            log.info(gameIdentifier + " stopped playing");
+                            log.info(username + " stopped playing in " + gameIdentifier);
                         } catch (Exception e) {
                             response.put("status", e.getMessage());
                             log.severe(e.getMessage());
