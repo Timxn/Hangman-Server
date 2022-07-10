@@ -25,8 +25,8 @@ public class GameImpl {
     }
 
     public void startingGame() throws Exception {
-        if (players.size()<2) throw new Exception("To less players");
-        if (isStarted) throw new Exception("Game cant be started again!");
+        if (players.size()<2) throw new Exception("Not enough players!");
+        if (isStarted) throw new Exception("Game can not be started again!");
         word.resetWord();
         isStarted = true;
         mistakesMade = 0;
@@ -35,9 +35,9 @@ public class GameImpl {
     }
 
     public void addPlayer(String username) throws Exception {
-        if (isStarted) throw new Exception("Game is already in progress and cant be joined!");
+        if (isStarted) throw new Exception("Game is already in progress and can't be joined!");
         for (PlayerImpl player : players) {
-            if (player.getUsername().equals(username)) throw new Exception("User already in game");
+            if (player.getUsername().equals(username)) throw new Exception("User is already in game!");
         }
         players.add(new PlayerImpl(username));
     }
@@ -55,20 +55,20 @@ public class GameImpl {
                 return player;
             }
         }
-        throw new Exception("There is no player with this username");
+        throw new Exception("There is no player with this username!");
     }
 
     public void setWord(String word, String username) throws Exception {
         if (!getPlayerByUsername(username).isGod()) throw new Exception("This player is not allowed to do that!");
-        if (IllegalString.isNotAlpha(word)) throw new Exception("Illegal word");
-        if (word.length() < 2) throw new Exception("Word to short");
-        if (word.length() > 20) throw new Exception("Word to long");
+        if (IllegalString.isNotAlpha(word)) throw new Exception("Illegal word!");
+        if (word.length() < 2) throw new Exception("Word too short!");
+        if (word.length() > 20) throw new Exception("Word too long!");
         this.word.setWord(word);
     }
 
     public void guessLetter(char letter, String username) throws Exception {
-        if (!getCurrentTurn().equals(username)) throw new Exception("Not this players turn");
-        if (IllegalString.isNotAlpha(String.valueOf(letter))) throw new Exception("Illegal char");
+        if (!getCurrentTurn().equals(username)) throw new Exception("Not your turn!");
+        if (IllegalString.isNotAlpha(String.valueOf(letter))) throw new Exception("Illegal char! (Nearly as illegal as you!)");
         if (!word.guessLetter(letter)) {
             guessedWrongLetters.add(letter);
             mistakesMade++;
@@ -158,7 +158,7 @@ public class GameImpl {
             }
             index++;
         }
-        throw new Exception("There is no player with this username");
+        throw new Exception("There is no player with this username!");
     }
 
     private int getIndexOfGod() throws Exception {
@@ -169,6 +169,6 @@ public class GameImpl {
             }
             index++;
         }
-        throw new Exception("There is no god");
+        throw new Exception("There is no god(thanks Stephen)");
     }
 }
