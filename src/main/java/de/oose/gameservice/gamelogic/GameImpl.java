@@ -44,6 +44,7 @@ public class GameImpl {
 
     public void removePlayer(String username) throws Exception {
         players.remove(getIndexOfPlayer(username));
+        isStarted = false;
         if (username.equals(winner))
             winner = null;
     }
@@ -61,6 +62,7 @@ public class GameImpl {
         if (!getPlayerByUsername(username).isGod()) throw new Exception("This player is not allowed to do that!");
         if (IllegalString.isNotAlpha(word)) throw new Exception("Illegal word");
         if (word.length() < 2) throw new Exception("Word to short");
+        if (word.length() > 20) throw new Exception("Word to long");
         this.word.setWord(word);
     }
 
