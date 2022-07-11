@@ -147,6 +147,7 @@ public class GameImpl {
             player.setGod(true);
             players.set(index, player); //could be removed?
         }
+        winner = null;
         return index;
     }
 
