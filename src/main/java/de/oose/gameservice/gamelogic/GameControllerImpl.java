@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public class GameControllerImpl implements GameController {
     ArrayList<GameImpl> allGames;
+    public HighscoreSystemImpl highscoreSystem;
 
     public GameControllerImpl(){
         allGames = new ArrayList<>();
+        highscoreSystem = new HighscoreSystemImpl();
     }
 
     @Override
@@ -54,6 +56,7 @@ public class GameControllerImpl implements GameController {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
         game.guessLetter(letter, username);
+        if (game.getWinner() != null) highscoreSystem.incrementUser(game.getWinner());
     }
 
     @Override
@@ -114,5 +117,9 @@ public class GameControllerImpl implements GameController {
             index++;
         }
         throw new Exception("There is no game using this ID!");
+    }
+
+    public ArrayList<String> getScoreboard() {
+        return highscoreSystem.getSort();
     }
 }
