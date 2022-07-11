@@ -329,6 +329,19 @@ public class ClientThread implements Runnable {
                         socket.close();
                         break label;
                     }
+
+                    case "getScoreboard": {
+                        JSONObject response = new JSONObject();
+                        try {
+                            response.put("scoreboard", Main.gameController.getScoreboard());
+                            response.put("status", "successful");
+                        } catch (Exception e) {
+                            response.put("status", e.getMessage());
+                            log.severe(e.getMessage());
+                        }
+                        objectOutputStream.writeUTF(response.toString());
+                        break;
+                    }
                 }
             }
         } catch (IOException ex) {
