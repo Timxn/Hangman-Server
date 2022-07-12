@@ -55,6 +55,7 @@ public class GameControllerImpl implements GameController {
     public void guessLetter(String gameIdentifier, char letter, String username) throws Exception {
         int index = getIndexByID(gameIdentifier);
         GameImpl game = allGames.get(index);
+        if (!game.isStarted()) throw new Exception("Game is not started!");
         game.guessLetter(letter, username);
         if (game.getWinner() != null) highscoreSystem.incrementUser(game.getWinner());
     }

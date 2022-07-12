@@ -278,13 +278,13 @@ class GameControllerImplTest {
                     gameController.startGame(gameID);
                     assertFalse(gameController.getWorded(gameID));
                     if (gameController.isGod(gameID,"Test")) {
-                        gameController.setWord(gameID, "Wort", "Test");
-                        assertDoesNotThrow(() -> gameController.guessLetter(gameID, 'a',"AnotherTest"));
-                        assertThrows(Exception.class, () -> gameController.guessLetter(gameID, 'a',"AnotherTest"));
+                        gameController.setWord(gameID, "ww", "Test");
+                        assertDoesNotThrow(() -> gameController.guessLetter(gameID, 'w',"AnotherTest"));
+                        assertThrows(Exception.class, () -> gameController.guessLetter(gameID, 'w',"AnotherTest"));
                     } else if (gameController.isGod(gameID,"AnotherTest")) {
-                        gameController.setWord(gameID, "Wort", "AnotherTest");
-                        assertDoesNotThrow(() -> gameController.guessLetter(gameID, 'a',"Test"));
-                        assertThrows(Exception.class, () -> gameController.guessLetter(gameID, 'a',"Test"));
+                        gameController.setWord(gameID, "ww", "AnotherTest");
+                        assertDoesNotThrow(() -> gameController.guessLetter(gameID, 'w',"Test"));
+                        assertThrows(Exception.class, () -> gameController.guessLetter(gameID, 'w',"Test"));
                     }
                 } catch (Exception e) {
                 }
