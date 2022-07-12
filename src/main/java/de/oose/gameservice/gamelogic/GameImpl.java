@@ -68,6 +68,7 @@ public class GameImpl {
     }
 
     public void guessLetter(char letter, String username) throws Exception {
+        if (!isStarted()) throw new Exception("Game is not started!");
         if (!getCurrentTurn().equals(username)) throw new Exception("Not your turn!");
         if (IllegalString.isNotAlpha(String.valueOf(letter))) throw new Exception("Illegal char! (Nearly as illegal as you!)");
         if (!word.guessLetter(letter)) {
