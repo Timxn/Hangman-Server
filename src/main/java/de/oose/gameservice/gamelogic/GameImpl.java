@@ -36,6 +36,7 @@ public class GameImpl {
 
     public void addPlayer(String username) throws Exception {
         if (isStarted) throw new Exception("Game is already in progress and can't be joined!");
+        if (players.size()>=8) throw new Exception("Game is full!");
         for (PlayerImpl player : players) {
             if (player.getUsername().equals(username)) throw new Exception("User is already in game!");
         }
