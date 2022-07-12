@@ -1,23 +1,30 @@
 package de.oose.gameservice.gamelogic;
 
-import java.util.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class HighscoreSystemImpl {
-    ArrayList<HighscoreUserImpl> list;
+    ArrayList<HighscoreUserImpl> list = new ArrayList<>();;
 
     public HighscoreSystemImpl() {
-        this.list = new ArrayList<>();
+        try {
+            loadData();
+        } catch (Exception e) {
+        }
     }
 
     public void incrementUser(String username) {
+        boolean incremented = true;
         for (HighscoreUserImpl user:list) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 user.setPoints(user.getPoints()+1);
-                return;
+                incremented = false;
             }
         }
-        addUser(username);
+        if (incremented) addUser(username);
+        writeData();
     }
 
     private void addUser(String username) {
@@ -31,5 +38,31 @@ public class HighscoreSystemImpl {
             tmp2.add(user.getUsername() + ": " + user.getPoints());
         }
         return tmp2;
+    }
+
+    public void writeData() {
+        try {
+            FileOutputStream fos = new FileOutputStream("highscores.tmp");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(list);
+            oos.close();
+            System.out.println("Data written - Highscores!");
+        } catch (IOException e) {
+            System.err.println("Data couldn't be written - Highscores!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void loadData() {
+        try {
+            FileInputStream fis = new FileInputStream("highscores.tmp");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            list = (ArrayList<HighscoreUserImpl>) ois.readObject();
+            ois.close();
+            System.out.println("Data loaded - Highscores!");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Data couldn't be loaded - Highscores!");
+            throw new RuntimeException(e);
+        }
     }
 }
