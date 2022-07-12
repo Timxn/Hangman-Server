@@ -64,6 +64,18 @@ public class ClientThread implements Runnable {
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
+                        if (username.length() > 10) {
+                            response.put("status", "Username is too long!");
+                            log.severe("Username is too long!");
+                            objectOutputStream.writeUTF(response.toString());
+                            break;
+                        }
+                        if (username.length() < 3) {
+                            response.put("status", "Username is too short!");
+                            log.severe("Username is too short!");
+                            objectOutputStream.writeUTF(response.toString());
+                            break;
+                        }
                         try {
                             this.gameIdentifier = Main.gameController.createGame(username);
                         } catch (Exception e) {
@@ -93,6 +105,18 @@ public class ClientThread implements Runnable {
                         if (IllegalString.isNotAlpha(username)) {
                             response.put("status", "Invalid username!");
                             log.severe("Invalid username!");
+                            objectOutputStream.writeUTF(response.toString());
+                            break;
+                        }
+                        if (username.length() > 10) {
+                            response.put("status", "Username is too long!");
+                            log.severe("Username is too long!");
+                            objectOutputStream.writeUTF(response.toString());
+                            break;
+                        }
+                        if (username.length() < 3) {
+                            response.put("status", "Username is too short!");
+                            log.severe("Username is too short!");
                             objectOutputStream.writeUTF(response.toString());
                             break;
                         }
