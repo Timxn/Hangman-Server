@@ -34,6 +34,10 @@ build:
 test:
   stage: test
   script: gradle check
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/*.xml
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
