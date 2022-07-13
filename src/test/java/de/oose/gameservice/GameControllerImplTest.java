@@ -341,15 +341,33 @@ class GameControllerImplTest {
             gameController.startGame(gameID);
             assertFalse(gameController.getWorded(gameID));
             if (gameController.isGod(gameID,"Test")) {
+                String scores = "";
+                for (int i = 0; i < gameController.getScoreboard().size(); i++) {
+                    if (gameController.getScoreboard().get(i).contains("AnotherTest")) scores = gameController.getScoreboard().get(i);
+                }
+                int positionOfPoints = scores.indexOf(":");
+                String scores_value_old = scores.substring(positionOfPoints+2);
+                String scores_value_new = String.valueOf((Integer.valueOf(scores)+1));
+                scores = scores.replace(scores_value_old, scores_value_new);
                 gameController.setWord(gameID, "ww", "Test");
                 gameController.guessLetter(gameID, 'w', "AnotherTest");
                 // prepare Environment -> play one round and then check if the player who won got a point on scoreboard
-                assertArrayEquals(gameController.getScoreboard().toArray(), new Object[]{"AnotherTest: 1"});
+                String tmp = gameController.getScoreboard().toArray().toString();
+                assertTrue(tmp.contains(scores));
             } else if (gameController.isGod(gameID,"AnotherTest")) {
+                String scores = "";
+                for (int i = 0; i < gameController.getScoreboard().size(); i++) {
+                    if (gameController.getScoreboard().get(i).contains("Test")) scores = gameController.getScoreboard().get(i);
+                }
+                int positionOfPoints = scores.indexOf(":");
+                String scores_value_old = scores.substring(positionOfPoints+2);
+                String scores_value_new = String.valueOf((Integer.valueOf(scores)+1));
+                scores = scores.replace(scores_value_old, scores_value_new);
                 gameController.setWord(gameID, "ww", "AnotherTest");
                 gameController.guessLetter(gameID, 'w', "Test");
                 // prepare Environment -> play one round and then check if the player who won got a point on scoreboard
-                assertArrayEquals(gameController.getScoreboard().toArray(), new Object[]{"Test: 1"});
+                String tmp = gameController.getScoreboard().toArray().toString();
+                assertTrue(tmp.contains(scores));
             }
         } catch (Exception e) {
         }
