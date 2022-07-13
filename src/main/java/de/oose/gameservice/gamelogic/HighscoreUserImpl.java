@@ -1,7 +1,5 @@
 package de.oose.gameservice.gamelogic;
 
-import java.io.Serializable;
-
 public class HighscoreUserImpl implements de.oose.gameservice.gamelogic.interfaces.HighscoreUser {
     private final String username;
     private Integer points;
