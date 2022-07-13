@@ -12,6 +12,7 @@ public class HighscoreSystemImpl implements de.oose.gameservice.gamelogic.interf
         try {
             loadData();
         } catch (Exception e) {
+            list = new ArrayList<>();
         }
     }
 
