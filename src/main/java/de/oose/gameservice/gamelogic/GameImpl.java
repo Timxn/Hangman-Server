@@ -5,7 +5,7 @@ import de.oose.gameservice.gamelogic.utils.RandomString;
 
 import java.util.ArrayList;
 
-public class GameImpl {
+public class GameImpl implements de.oose.gameservice.gamelogic.interfaces.Game {
     private String gameID;
     private boolean isStarted = false;
     private int mistakesMade = 0;
@@ -24,6 +24,7 @@ public class GameImpl {
         this.gameID = createGameID();
     }
 
+    @Override
     public void startingGame() throws Exception {
         if (players.size()<2) throw new Exception("Not enough players!");
         if (isStarted) throw new Exception("Game can not be started again!");
@@ -34,6 +35,7 @@ public class GameImpl {
         turnHandler.setOrder(players.size() - 1, godMaker());
     }
 
+    @Override
     public void addPlayer(String username) throws Exception {
         if (isStarted) throw new Exception("Game is already in progress and can't be joined!");
         if (players.size()>=8) throw new Exception("Game is full!");
@@ -43,6 +45,7 @@ public class GameImpl {
         players.add(new PlayerImpl(username));
     }
 
+    @Override
     public void removePlayer(String username) throws Exception {
         players.remove(getIndexOfPlayer(username));
         isStarted = false;
@@ -50,6 +53,7 @@ public class GameImpl {
             winner = null;
     }
 
+    @Override
     public PlayerImpl getPlayerByUsername(String username) throws Exception {
         for (PlayerImpl player: players) {
             if(player.getUsername().equals(username)){
@@ -59,6 +63,7 @@ public class GameImpl {
         throw new Exception("There is no player with this username!");
     }
 
+    @Override
     public void setWord(String word, String username) throws Exception {
         if (!getPlayerByUsername(username).isGod()) throw new Exception("This player is not allowed to do that!");
         if (IllegalString.isNotAlpha(word)) throw new Exception("Illegal word!");
@@ -67,6 +72,7 @@ public class GameImpl {
         this.word.setWord(word);
     }
 
+    @Override
     public void guessLetter(char letter, String username) throws Exception {
         if (!isStarted()) throw new Exception("Game is not started!");
         if (!getCurrentTurn().equals(username)) throw new Exception("Not your turn!");
@@ -85,10 +91,12 @@ public class GameImpl {
         }
     }
 
+    @Override
     public boolean isWordGuessed() {
         return word.isWordGuessed();
     }
 
+    @Override
     public ArrayList<String> getPlayers() {
         ArrayList<String> usernames = new ArrayList<>();
         for (PlayerImpl player: players) {
@@ -97,31 +105,38 @@ public class GameImpl {
         return usernames;
     }
 
+    @Override
     public String getGuessedWrongLetters() {
         String returny = guessedWrongLetters.toString();
         return returny.substring(1, returny.length() - 1);
     }
 
+    @Override
     public String getWinner() {
         return winner;
     }
 
+    @Override
     public String getGameID() {
         return gameID;
     }
 
+    @Override
     public boolean isStarted() {
         return isStarted;
     }
 
+    @Override
     public WordImpl getWordObject() {
         return word;
     }
 
+    @Override
     public String getCurrentTurn() {
         return players.get(turnHandler.getCurrentTurn()).getUsername();
     }
 
+    @Override
     public int getMistakesMade() {
         return mistakesMade;
     }

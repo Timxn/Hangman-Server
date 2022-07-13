@@ -2,10 +2,11 @@ package de.oose.gameservice.gamelogic;
 
 import java.util.ArrayList;
 
-public class TurnHandlerImpl {
+public class TurnHandlerImpl implements de.oose.gameservice.gamelogic.interfaces.TurnHandler {
     private int currentIndex = 0;
     private int[] order;
 
+    @Override
     public void setOrder(int count, int skipper) {
         ArrayList<Integer> integers = new ArrayList<>();
         for (int i = 0; i < count + 1; i++) {
@@ -21,10 +22,12 @@ public class TurnHandlerImpl {
         currentIndex = 0;
     }
 
+    @Override
     public int getCurrentTurn() {
         return order[currentIndex];
     }
 
+    @Override
     public void nextTurn() {
         currentIndex++;
         if (currentIndex == order.length) {

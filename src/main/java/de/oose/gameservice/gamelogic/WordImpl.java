@@ -1,9 +1,10 @@
 package de.oose.gameservice.gamelogic;
 
-public class WordImpl {
+public class WordImpl implements de.oose.gameservice.gamelogic.interfaces.Word {
     private String word = null;
     private String hiddenWord = "";
 
+    @Override
     public String getWord() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i <hiddenWord.length() ; i++) {
@@ -14,6 +15,7 @@ public class WordImpl {
         return sb.toString();
     }
 
+    @Override
     public void setWord(String word) throws Exception {
         if (this.word != null) throw new Exception("Word already set");
         this.word = word;
@@ -24,6 +26,7 @@ public class WordImpl {
         hiddenWord = sb.toString();
     }
 
+    @Override
     public boolean guessLetter(char letter) {
         boolean correct = false;
         for (int i = 0; i <word.length() ; i++) {
@@ -35,10 +38,12 @@ public class WordImpl {
         return correct;
     }
 
+    @Override
     public boolean isWordGuessed() {
         return word.equals(hiddenWord);
     }
 
+    @Override
     public void resetWord() {
         word = null;
         hiddenWord = "";

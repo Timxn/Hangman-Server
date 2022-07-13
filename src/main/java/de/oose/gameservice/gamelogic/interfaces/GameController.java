@@ -3,41 +3,41 @@ package de.oose.gameservice.gamelogic.interfaces;
 import java.util.ArrayList;
 
 public interface GameController {
+
     /**
      * Adds a user to an existing game.
-     * @param username
+     * @param username user which will be added
      * @param gameIdentifier the identifier of the game
      */
-    public void joinGame(String gameIdentifier, String username) throws Exception;
+    void joinGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * removes a user from an existing game.
-     * @param username
+     * @param username user which will be removed
      * @param gameIdentifier the identifier of the game
      */
-    public void leaveGame(String gameIdentifier, String username) throws Exception;
+    void leaveGame(String gameIdentifier, String username) throws Exception;
 
     /**
      * creates a new game.
-     * @param username
+     * @param username user which will be added to the game
      * @return 1000-9999 as identifier for the game
      */
-    public String createGame(String username);
+    String createGame(String username);
 
     /**
      * starts a new game.
-     * @param gameIdentifier
-     * @return true if game start was successfully
+     * @param gameIdentifier the identifier of the game
      */
-    public void startGame(String gameIdentifier) throws Exception;
+    void startGame(String gameIdentifier) throws Exception;
 
     /**
      * returns if a player is god
-     * @param gameIdentifier
-     * @param username
-     * @return true if god...
+     * @param gameIdentifier the identifier of the game
+     * @param username the username of the player
+     * @return true if god, false if not
      */
-    public boolean isGod(String gameIdentifier, String username) throws Exception;
+    boolean isGod(String gameIdentifier, String username) throws Exception;
 
     /**
      * gives god the ability to set the word for the next round.
@@ -47,62 +47,62 @@ public interface GameController {
 
     /**
      * make a guess
-     * @param letter
+     * @param letter the letter which will be guessed
      */
-    public void guessLetter(String gameIdentifier, char letter, String username) throws Exception;
+    void guessLetter(String gameIdentifier, char letter, String username) throws Exception;
 
     /**
      * Get the players of the game in which the player is
      * @return ArrayList<Username>
      */
-    public ArrayList<String> getPlayers(String gameIdentifier) throws Exception;
+    ArrayList<String> getPlayers(String gameIdentifier) throws Exception;
 
     /**
      * Get the word but with all unknown characters replaced by NULL and split by spaces so the client of the user has the minimum of the information
      * @return String (the word ex.: W NULL R D) (WORD) or null if no word exists yet (god has not yet set one)
      */
-    public String getWord(String gameIdentifier) throws Exception;
+    String getWord(String gameIdentifier) throws Exception;
 
     /**
      * Get all characters that have been tried in an ArrayList<Character> and are not correct
      * @return ArrayList<Character>
      */
-    public String getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception;
+    String getCharactersThatAlreadyHaveBeenTried(String gameIdentifier) throws Exception;
 
 
     /**
      * How many mistakes the guessers made
      *
-     * @param gameIdentifier
+     * @param gameIdentifier the identifier of the game
      * @return int 0-9
      */
     int getMistakesMade(String gameIdentifier) throws Exception;
 
     /**
      * gets if the word has been guessed.
-     * @return
+     * @return true if word has been guessed, false if not
      */
-    public boolean getWordGuessed(String gameIdentifier) throws Exception;
+    boolean getWordGuessed(String gameIdentifier) throws Exception;
 
     /**
      * get if game is started
-     * @param gameIdentifier
-     * @return
+     * @param gameIdentifier the identifier of the game
+     * @return true if game is started, false if not
      */
-    public boolean getStarted(String gameIdentifier) throws Exception;
+    boolean getStarted(String gameIdentifier) throws Exception;
 
     /**
      * get if god entered a valid word
-     * @param gameIdentifier
-     * @return
+     * @param gameIdentifier the identifier of the game
+     * @return true if god entered a valid word, false if not
      */
-    public boolean getWorded(String gameIdentifier) throws Exception;
+    boolean getWorded(String gameIdentifier) throws Exception;
 
     /**
      * Return the Username of the User whose turn it is to guess a character
      * @return String (Username ex.: Test)
      */
-    public String whoseTurnIsIt(String gameIdentifier) throws Exception;
+    String whoseTurnIsIt(String gameIdentifier) throws Exception;
 
-    public String getWinnerOfGame(String gameIdentifier) throws Exception;
+    String getWinnerOfGame(String gameIdentifier) throws Exception;
 }

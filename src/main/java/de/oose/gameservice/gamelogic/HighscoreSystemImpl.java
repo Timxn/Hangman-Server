@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-public class HighscoreSystemImpl {
-    ArrayList<HighscoreUserImpl> list = new ArrayList<>();;
+public class HighscoreSystemImpl implements de.oose.gameservice.gamelogic.interfaces.HighscoreSystem {
+    ArrayList<HighscoreUserImpl> list = new ArrayList<>();
 
     public HighscoreSystemImpl() {
         try {
@@ -15,6 +15,7 @@ public class HighscoreSystemImpl {
         }
     }
 
+    @Override
     public void incrementUser(String username) {
         boolean incremented = true;
         for (HighscoreUserImpl user:list) {
@@ -31,6 +32,7 @@ public class HighscoreSystemImpl {
         this.list.add(new HighscoreUserImpl(username));
     }
 
+    @Override
     public ArrayList<String> getSort() {
         ArrayList<HighscoreUserImpl> tmp = new ArrayList<>(list.stream().sorted(Comparator.comparing(HighscoreUserImpl::getPoints).reversed()).collect(Collectors.toList()));
         ArrayList<String> tmp2 = new ArrayList<>();
@@ -40,6 +42,7 @@ public class HighscoreSystemImpl {
         return tmp2;
     }
 
+    @Override
     public void writeData() {
         try {
             FileOutputStream fos = new FileOutputStream("highscores.tmp");
@@ -53,6 +56,7 @@ public class HighscoreSystemImpl {
         }
     }
 
+    @Override
     public void loadData() {
         try {
             FileInputStream fis = new FileInputStream("highscores.tmp");
